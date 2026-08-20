@@ -6,48 +6,52 @@
 <title>Wonderlic SLE Practice Test</title>
 <style>
   :root{
-    --bg:#f4f6f8; --card:#ffffff; --ink:#1a2330; --sub:#5b6b7d;
-    --accent:#1d5fd6; --accent-ink:#ffffff; --good:#1a8a4a; --bad:#c02f33;
-    --warn:#b26a00; --line:#dde4ec;
+    --bg:#eef2f8; --card:#ffffff; --ink:#16233a; --sub:#5a6b85;
+    --accent:#1f3049; --accent2:#318FE4; --gold:#ffde59; --pale:#c9d8ec;
+    --accent-ink:#ffffff; --good:#1a7a4a; --bad:#b3282d;
+    --warn:#8a5a00; --line:#d3dfef;
   }
   *{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
   body{background:var(--bg);color:var(--ink);min-height:100vh;display:flex;justify-content:center;padding:24px 12px}
   .wrap{width:100%;max-width:760px}
   .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:28px;margin-bottom:16px;box-shadow:0 1px 4px rgba(20,35,60,.06)}
-  h1{font-size:26px;margin-bottom:6px}
+  h1{font-size:26px;margin-bottom:6px;color:var(--accent)}
+  h2{color:var(--accent)}
+  .hero{background:linear-gradient(135deg,#1f3049,#003e71);color:#fff;border-radius:14px;padding:22px 24px;margin:-28px -28px 20px;border-bottom:4px solid var(--gold)}
+  .hero h1{color:#fff;margin-bottom:4px} .hero .sub{color:var(--pale)}
   h2{font-size:19px;margin:18px 0 8px}
   p,li{font-size:15px;line-height:1.55;color:var(--ink)}
   .sub{color:var(--sub)}
   ul{margin:8px 0 8px 22px}
   button{cursor:pointer;border:none;border-radius:10px;font-size:16px;font-weight:600}
-  .btn-primary{background:var(--accent);color:var(--accent-ink);padding:14px 28px}
+  .btn-primary{background:var(--accent);color:var(--accent-ink);padding:14px 28px;border-bottom:3px solid var(--gold)}
   .btn-primary:hover{filter:brightness(1.1)}
   .topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
-  .timer{font-size:28px;font-weight:800;font-variant-numeric:tabular-nums}
+  .timer{font-size:28px;font-weight:800;font-variant-numeric:tabular-nums;color:var(--accent)}
   .timer.low{color:var(--bad)}
   .qnum{font-size:14px;color:var(--sub);font-weight:600}
   .qtext{font-size:19px;line-height:1.5;margin:10px 0 14px;white-space:pre-line}
   #qsvg{margin:0 0 14px} #qsvg svg{max-width:100%;height:auto;color:var(--ink)}
   .opts{display:flex;flex-direction:column;gap:10px}
-  .opt{background:#f2f5f9;border:2px solid transparent;border-radius:10px;padding:13px 16px;font-size:16px;text-align:left;color:var(--ink)}
-  .opt:hover:not(:disabled){border-color:var(--accent)}
+  .opt{background:#f4f7fb;border:2px solid transparent;border-radius:10px;padding:13px 16px;font-size:16px;text-align:left;color:var(--ink)}
+  .opt:hover:not(:disabled){border-color:var(--accent2);background:#e9f2fc}
   .opt:disabled{opacity:.55;cursor:default}
   .kbdnote{font-size:13px;color:var(--sub);margin-top:14px}
   .score-big{font-size:56px;font-weight:800}
   .score-good{color:var(--good)} .score-mid{color:var(--warn)} .score-bad{color:var(--bad)}
   table{width:100%;border-collapse:collapse;margin:10px 0}
   th,td{padding:8px 10px;text-align:left;border-bottom:1px solid var(--line);font-size:14px}
-  th{color:var(--sub);font-weight:600}
+  th{color:var(--accent);font-weight:700}
   .miss{border-left:4px solid var(--bad);padding:14px 16px;background:#fdf6f6;border-radius:8px;margin-bottom:12px}
   .miss.slow{border-left-color:var(--warn);background:#fdfaf3}
   .miss h3{font-size:15px;margin-bottom:6px}
-  .tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;background:#e8edf4;color:var(--sub);border-radius:6px;padding:2px 8px;margin-right:6px}
+  .tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;background:var(--pale);color:var(--accent);border-radius:6px;padding:2px 8px;margin-right:6px}
   .ans{font-size:14px;margin:4px 0}
-  .tip{font-size:14px;color:#0d4d8c;background:#eef5fd;border-radius:6px;padding:8px 10px;margin-top:6px}
+  .tip{font-size:14px;color:#10395f;background:#e9f2fc;border-left:3px solid var(--accent2);border-radius:6px;padding:8px 10px;margin-top:6px}
   .warnbox{font-size:14px;color:var(--warn);background:#fdf8ee;border:1px solid #f0e2c4;border-radius:8px;padding:10px 12px;margin-top:12px}
   .hidden{display:none}
   .center{text-align:center}
-  kbd{background:#e8edf4;border-radius:4px;padding:1px 6px;font-size:13px}
+  kbd{background:var(--pale);color:var(--accent);border-radius:4px;padding:1px 6px;font-size:13px}
 </style>
 </head>
 <body>
@@ -55,8 +59,10 @@
 
   <!-- START SCREEN -->
   <div id="start" class="card">
-    <h1>Wonderlic SLE Simulator</h1>
-    <p class="sub">50 questions · 12 minutes · same structure, mix, and mechanics as the real exam</p>
+    <div class="hero">
+      <h1>Wonderlic SLE Practice Test</h1>
+      <p class="sub">50 questions · 12 minutes · same structure, mix, and mechanics as the real exam</p>
+    </div>
     <h2>Rules (same as real test)</h2>
     <ul>
       <li>Timer starts when you click Start. Auto-submits at 0:00.</li>
@@ -503,6 +509,7 @@ function finish(){
     html += `<div class="miss">
       <h3>Q${i+1} <span class="tag">${q.c}</span> ${a.unreached?'<span class="tag">'+status+'</span>':''}</h3>
       <p class="ans" style="white-space:pre-line">${q.t}</p>
+      ${q.svg || ""}
       ${!a.unreached ? `<p class="ans">✗ ${status} ${a.sec>SLOW_SEC?`(took ${a.sec.toFixed(0)}s — too long)`:""}</p>` : ""}
       <p class="ans">✓ Correct: <b>${q.o[q.a]}</b> — ${q.e}</p>
       <div class="tip">⚡ Faster next time: ${q.tip}</div>
@@ -516,6 +523,7 @@ function finish(){
       html += `<div class="miss slow">
         <h3>Q${i+1} <span class="tag">${q.c}</span> <span class="tag">${a.sec.toFixed(0)}s</span></h3>
         <p class="ans" style="white-space:pre-line">${q.t}</p>
+        ${q.svg || ""}
         <div class="tip">⚡ ${q.tip}</div>
       </div>`;
     });
