@@ -52,6 +52,62 @@
   .hidden{display:none}
   .center{text-align:center}
   kbd{background:var(--pale);color:var(--accent);border-radius:4px;padding:1px 6px;font-size:13px}
+
+  .method{border-left:4px solid var(--accent2);background:#f4f9ff;border-radius:8px;padding:14px 16px;margin-bottom:12px;animation:qIn .3s ease-out both}
+  .method h3{font-size:15px;margin-bottom:8px}
+  .mlist{margin:6px 0 8px 20px} .mlist li{font-size:14px;line-height:1.5;margin-bottom:4px}
+  details{border:1px solid var(--line);border-radius:10px;padding:12px 16px;margin-top:8px;background:#fbfcfe}
+  summary{cursor:pointer;font-weight:700;color:var(--accent);font-size:16px}
+  details[open] summary{margin-bottom:12px}
+
+  /* ---- motion ---- */
+  .card{animation:cardIn .34s cubic-bezier(.22,.68,.35,1) both}
+  @keyframes cardIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+  @keyframes qIn{from{opacity:.25;transform:translateY(7px)}to{opacity:1;transform:none}}
+  @keyframes optIn{from{opacity:.25;transform:translateY(5px)}to{opacity:1;transform:none}}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.45}}
+  @keyframes popIn{from{opacity:0;transform:scale(.85)}to{opacity:1;transform:none}}
+  #qtext,#qsvg{animation:qIn .17s ease-out both}
+  .opt{animation:optIn .17s ease-out both}
+  .timer.low{animation:pulse 1s ease-in-out infinite}
+  .score-big{animation:popIn .4s cubic-bezier(.2,1.3,.4,1) both}
+  .miss{animation:qIn .3s ease-out both}
+
+  /* ---- progress + time bars ---- */
+  .bars{display:flex;flex-direction:column;gap:5px;margin-bottom:16px}
+  .bar{height:5px;background:var(--pale);border-radius:99px;overflow:hidden}
+  .bar>i{display:block;height:100%;border-radius:99px;transition:width .35s cubic-bezier(.3,.8,.4,1)}
+  #pbar>i{background:var(--accent2)}
+  #tbar>i{background:var(--accent);transition:width 1s linear,background .4s ease}
+  #tbar.warn>i{background:#c88a00} #tbar.crit>i{background:var(--bad)}
+
+  /* ---- interaction polish ---- */
+  .opt{transition:background .13s ease,border-color .13s ease,transform .08s ease;
+       -webkit-user-select:none;user-select:none;touch-action:manipulation}
+  .opt:active{transform:scale(.985);background:var(--pale)}
+  .btn-primary{transition:transform .12s ease,box-shadow .18s ease,filter .15s ease}
+  .btn-primary:hover{transform:translateY(-1px);box-shadow:0 5px 16px rgba(31,48,73,.28)}
+  .btn-primary:active{transform:translateY(0)}
+  :focus-visible{outline:3px solid var(--accent2);outline-offset:2px;border-radius:8px}
+  input:focus{outline:none;border-color:var(--accent2);box-shadow:0 0 0 3px rgba(49,143,228,.22)}
+
+  /* ---- responsive ---- */
+  @media (max-width:640px){
+    body{padding:10px 8px}
+    .card{padding:20px 16px;border-radius:12px}
+    .hero{margin:-20px -16px 16px;padding:18px 16px}
+    h1{font-size:21px} .qtext{font-size:17px}
+    .opt{padding:15px 14px;font-size:16px}
+    .timer{font-size:24px}
+    .score-big{font-size:46px}
+    #taker{width:100%;margin:0 0 10px!important}
+    .btn-primary{width:100%}
+  }
+
+  /* ---- respect reduced motion ---- */
+  @media (prefers-reduced-motion:reduce){
+    *,*::before,*::after{animation:none!important;transition:none!important}
+  }
 </style>
 </head>
 <body>
@@ -90,6 +146,10 @@
     <div class="topbar">
       <span class="qnum" id="qnum"></span>
       <span class="timer" id="timer">12:00</span>
+    </div>
+    <div class="bars">
+      <div class="bar" id="pbar"><i style="width:0%"></i></div>
+      <div class="bar" id="tbar"><i style="width:100%"></i></div>
     </div>
     <div class="qtext" id="qtext"></div>
     <div id="qsvg"></div>
@@ -382,6 +442,84 @@ const Q = [
   tip:"Two equations: scale one so the pens match, subtract, divide. $0.60 is the PEN price (wrong item); $0.55 = 2.20 ÷ 4 ignoring the pen. If this eats 30s, guess and move — it's still just 1 point."}
 ];
 
+
+// Transferable playbook per question type — how to recognize it and the fixed procedure.
+const METHODS = {
+ "Verbal": {
+  spot:"Two words in caps, an A:B::C:? analogy, a proverb in quotes, a scrambled sentence, or a five-word odd-one-out.",
+  method:["Word pair → define each word in two words silently, then ask: same / opposite / neither. Nothing else.",
+          "Analogy → say the relationship as a full sentence first ('a finger is PART OF a hand'), then plug the second pair in. Never pick before the sentence exists.",
+          "Proverb → cross out every literal option, then choose the abstract option whose cause→effect mirrors the proverb's.",
+          "Odd-one-out → name the category shared by any three; the leftover is the answer.",
+          "Scrambled sentence → find subject + verb, hear the sentence, THEN answer what was actually asked."],
+  trap:"The association trap. HAMMER→nail and FAMINE→hunger feel right because the words travel together, but they break the relationship. Prefix traps too: im-/un-/in- flips meaning, so strip the prefix before judging.",
+  budget:"8–12s"
+ },
+ "Math": {
+  spot:"Any numbers, money, percent, ratio, rate, or 'how many'.",
+  method:["Read the LAST line first so you know what's being asked before parsing the numbers.",
+          "Percent → find 10%, then scale. Percent change = change ÷ ORIGINAL.",
+          "Fraction of a number → divide by the denominator first, then multiply.",
+          "Rate → get the per-1 unit rate, then scale. Convert everything to ONE unit before multiplying.",
+          "'A costs $d more, together $T' → smaller = (T − d) ÷ 2.",
+          "Averages → work in TOTALS (avg × count), never average the averages."],
+  trap:"Answering the wrong item. The options include the other person's share, the discount instead of the price, the pen instead of the pencil. Re-read the question before you commit.",
+  budget:"15–20s"
+ },
+ "Number Series": {
+  spot:"A row of numbers ending in a blank or question mark.",
+  method:["Divide the last term by the one before it. Clean ratio (×2, ÷3)? Done.",
+          "No clean ratio → write the differences underneath.",
+          "Differences constant → simple add/subtract. Differences DOUBLING → rule is ×2 ± a constant; use the last pair to find the constant.",
+          "Differences growing steadily (−4,−8,−12) → the next gap grows again.",
+          "Still nothing → test sum of the previous two (Fibonacci), including disguised openings like 3, 4, 7, 11."],
+  trap:"Applying the rule but dropping the constant — the ×2 answer is always offered next to the ×2+1 answer. Series also run past 1 into fractions; don't stall when the options turn fractional.",
+  budget:"12–15s"
+ },
+ "Logic": {
+  spot:"Numbered statements with 'Assume the first two/three statements are true', or a ranking puzzle (taller/faster than).",
+  method:["Rewrite double negatives immediately: 'no X is un-Y' becomes 'all X are Y'.",
+          "All X are Y + Z is an X → TRUE. All X are Y + some Z are X → 'some Z are Y' is TRUE.",
+          "Conclusion the premises actively contradict → FALSE. Conclusion merely unsupported → NOT CERTAIN. Keep these two apart; confusing them is the #1 error on this type.",
+          "'Some' + a named person → NOT CERTAIN, unless that person is explicitly placed inside the subgroup.",
+          "Ranking → write initials on one line (D > A > B > C), then read the answer off. Re-check whether it asked for tallest or shortest."],
+  trap:"Real-world knowledge. Judge only what the premises say, never whether it's true in a hospital. And superlative reversals — 'second shortest' after you built a tallest-first line.",
+  budget:"15–20s"
+ },
+ "Spatial": {
+  spot:"A row of shapes, a diagram, or the words rotated / mirror image / comes next.",
+  method:["Sequence → find the ONE element that moves and its direction, then advance it one step.",
+          "Mirror vs rotation → pick a single feature and track its HEIGHT. A mirror keeps top features on top; a rotation moves them to the bottom.",
+          "Odd-one-out → rotations preserve handedness. If no rotation can produce it, it's the mirror — that's the odd one."],
+  trap:"The 'no change' option (a repeat of the last frame) and the 180° rotation offered as a fake mirror. Track one feature, not the whole shape.",
+  budget:"15–20s"
+ },
+ "Quick Recognition": {
+  spot:"A list of dates, a column of name/number pairs, or a set of similar words.",
+  method:["Dates → compare YEARS first and cross out losers, then months, then days. Never read them as whole dates.",
+          "Duplicate pairs → scan letter by letter, and check the initials; differences hide in vowel swaps (Nieman/Neiman) and single initials (G.K./C.K.).",
+          "Alphabetical → a shorter word that is a prefix of the others always comes first; otherwise compare the first letter where they diverge."],
+  trap:"Reading whole items instead of scanning one column at a time. These are pure speed points — losing time here is what leaves questions unreached.",
+  budget:"5–8s"
+ },
+ "General Knowledge": {
+  spot:"A plain fact question with no computation.",
+  method:["You either know it or you don't. Answer in 3 seconds or guess and move — never reason it out.",
+          "Worth memorizing tonight: 7 months have 31 days, 4 have 30, February has 28 (29 in a leap year)."],
+  trap:"Spending 20 seconds reconstructing a fact worth exactly 1 point.",
+  budget:"3–5s"
+ }
+};
+
+function methodCard(cat, m, extraTag){
+  return `<div class="method">
+    <h3><span class="tag">${cat}</span>${extraTag || ""}<span class="tag">${m.budget}</span></h3>
+    <p class="ans"><b>Spot it:</b> ${m.spot}</p>
+    <ul class="mlist">${m.method.map(s=>`<li>${s}</li>`).join("")}</ul>
+    <div class="tip">⚠️ <b>Trap:</b> ${m.trap}</div>
+  </div>`;
+}
+
 // ---- state ----
 let idx = 0, answers = [], qStart = 0, testStart = 0, timerInt = null, curOrder = null;
 const TOTAL_SEC = 720, SLOW_SEC = 25;
@@ -397,6 +535,11 @@ if (attempts > 0) {
   $("attemptnote").innerHTML = `<div class="warnbox">Attempt #${attempts+1}. You've seen these questions — repeat scores run high. Treat PACE and category accuracy as the signal, not the raw score.</div>`;
 }
 
+document.addEventListener("DOMContentLoaded", ()=>{
+  const t = $("taker");
+  if(t) t.addEventListener("keydown", e=>{ if(e.key==="Enter") startTest(); });
+});
+
 function startTest(){
   const t = $("taker");
   if(t && t.value.trim()) takerName = t.value.trim().slice(0,60);
@@ -404,6 +547,7 @@ function startTest(){
   $("test").classList.remove("hidden");
   testStart = Date.now();
   timerInt = setInterval(tick, 250);
+  window.onbeforeunload = () => "Your test is in progress — leaving will lose it.";
   document.addEventListener("keydown", keyAnswer);
   showQ();
 }
@@ -415,6 +559,10 @@ function tick(){
   const el = $("timer");
   el.textContent = m + ":" + String(s).padStart(2,"0");
   el.classList.toggle("low", left <= 120);
+  const tb = $("tbar");
+  tb.firstElementChild.style.width = (left / TOTAL_SEC * 100) + "%";
+  tb.classList.toggle("warn", left <= 180 && left > 60);
+  tb.classList.toggle("crit", left <= 60);
 }
 
 function showQ(){
@@ -436,12 +584,13 @@ function showQ(){
   curOrder.forEach((oi,pos)=>{
     const b = document.createElement("button");
     b.className = "opt";
-    b.disabled = true; // debounce: block double-click bleed-through from previous question
+    b.style.animationDelay = (pos * 20) + "ms";
     b.textContent = String.fromCharCode(65+pos) + ".  " + q.o[oi];
     b.onclick = ()=>answer(oi);
     box.appendChild(b);
   });
-  setTimeout(()=>{ for(const b of box.children) b.disabled = false; }, 250);
+  $("pbar").firstElementChild.style.width = (idx / Q.length * 100) + "%";
+  window.scrollTo({top:0, behavior:"instant"});
 }
 
 function keyAnswer(ev){
@@ -452,10 +601,12 @@ function keyAnswer(ev){
   else if(k >= "a" && k <= "e") pos = k.charCodeAt(0) - 97;
   if(pos < 0 || pos >= curOrder.length) return;
   const btn = $("opts").children[pos];
-  if(btn && !btn.disabled) btn.click();
+  if(btn) btn.click();
 }
 
 function answer(choice){
+  // ignore stray double-click bleed-through without ever disabling input
+  if(Date.now() - qStart < 130) return;
   answers.push({choice, sec:(Date.now()-qStart)/1000});
   idx++;
   if(idx >= Q.length) finish(); else showQ();
@@ -463,9 +614,11 @@ function answer(choice){
 
 function finish(){
   clearInterval(timerInt);
+  window.onbeforeunload = null;
   document.removeEventListener("keydown", keyAnswer);
   try { localStorage.setItem("wl_attempts", attempts + 1); } catch(e) {}
   while(answers.length < Q.length) answers.push({choice:null, sec:0, unreached:true});
+  $("pbar").firstElementChild.style.width = "100%";
   $("test").classList.add("hidden");
   const r = $("results");
   r.classList.remove("hidden");
@@ -501,6 +654,17 @@ function finish(){
   });
   html += "</table>";
 
+  const weak = Object.entries(cats).filter(([,v]) => v.right/v.total < 0.7)
+    .sort((a,b) => (a[1].right/a[1].total) - (b[1].right/b[1].total));
+  if(weak.length){
+    html += `<h2>Drill these first — ${weak.length} weak ${weak.length===1?"category":"categories"}</h2>`;
+    weak.forEach(([c,v]) => {
+      if(METHODS[c]) html += methodCard(c, METHODS[c], `<span class="tag">${v.right}/${v.total}</span>`);
+    });
+  } else {
+    html += `<h2>No weak categories</h2><p>Every category cleared 70%. Work the full method list below for speed.</p>`;
+  }
+
   const misses = Q.map((q,i)=>({q,i,a:answers[i]})).filter(x=> x.a.choice !== x.q.a);
   html += `<h2>Missed & unreached (${misses.length}) — how to solve each one faster</h2>`;
   if(!misses.length) html += "<p>Perfect run. Take it again — the real one won't be this kind.</p>";
@@ -529,7 +693,13 @@ function finish(){
     });
   }
   html = '<div id="upstatus" class="warnbox">Uploading results…</div>' + html;
+  html += `<h2>Every method — study list</h2>
+    <details><summary>Open all ${Object.keys(METHODS).length} question-type playbooks</summary>
+    ${Object.entries(METHODS).map(([c,m]) => methodCard(c, m)).join("")}</details>`;
+
   r.innerHTML = html;
+  r.querySelectorAll(".miss").forEach((el,i)=>{ el.style.animationDelay = Math.min(i*45, 600) + "ms"; });
+  countUp(r.querySelector(".score-big"), correct);
   window.scrollTo(0,0);
   uploadResults({
     taker_name: takerName,
@@ -539,6 +709,17 @@ function finish(){
     categories: cats,
     answers: Q.map((q,i)=>({ n:i+1, category:q.c, question:q.t.slice(0,120), your_answer: answers[i].choice===null?null:q.o[answers[i].choice], correct_answer: q.o[q.a], correct: answers[i].choice===q.a, seconds: +answers[i].sec.toFixed(1) }))
   });
+}
+
+function countUp(el, target){
+  if(!el || matchMedia("(prefers-reduced-motion:reduce)").matches) return;
+  const dur = 850, t0 = performance.now();
+  el.textContent = "0";
+  (function step(now){
+    const p = Math.min((now - t0) / dur, 1);
+    el.textContent = Math.round(target * (1 - Math.pow(1 - p, 3)));
+    if(p < 1) requestAnimationFrame(step);
+  })(t0);
 }
 
 async function uploadResults(payload){
