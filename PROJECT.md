@@ -1,4 +1,4 @@
-# Wonderholic Guide, Quiz & Understanding — ABSN
+# Wonderholic ABSN Guide
 
 - Home: projects
 - Kind: website

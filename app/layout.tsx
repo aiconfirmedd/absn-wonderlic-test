@@ -6,7 +6,7 @@ const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Wonderholic Guide, Quiz & Understanding — ABSN",
+  title: "Wonderholic ABSN Guide",
   description: "A verified 50-question practice quiz and focused Wonderlic guide for ABSN preparation.",
   icons: { icon: "/favicon.svg", shortcut: "/favicon.svg" },
 };

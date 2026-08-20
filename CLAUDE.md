@@ -1,4 +1,4 @@
-# Wonderholic Guide, Quiz & Understanding — ABSN project operating policy
+# Wonderholic ABSN Guide project operating policy
 
 Apply root `CLAUDE.md` / `AGENTS.md` first, then this file. This file is the canonical project-scoped policy for Claude, Codex, and compatible agents.
 

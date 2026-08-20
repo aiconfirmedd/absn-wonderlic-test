@@ -1,4 +1,4 @@
-# Wonderholic Guide, Quiz & Understanding — ABSN
+# Wonderholic ABSN Guide
 
 A compact ABSN study guide and verified 50-question, 12-minute Wonderlic SLE-style practice quiz.
 

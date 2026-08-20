@@ -1,4 +1,4 @@
-# Wonderholic Guide, Quiz & Understanding — ABSN research
+# Wonderholic ABSN Guide research
 
 Research date: 2026-08-20
 
