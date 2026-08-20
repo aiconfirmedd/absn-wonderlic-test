@@ -6,8 +6,8 @@ const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Xu Xi · Wonderlic SLE Practice",
-  description: "A verified 50-question Wonderlic SLE practice exam and focused ABSN study textbook for Xu Xi.",
+  title: "Wonderholic Guide, Quiz & Understanding — ABSN",
+  description: "A verified 50-question practice quiz and focused Wonderlic guide for ABSN preparation.",
   icons: { icon: "/favicon.svg", shortcut: "/favicon.svg" },
 };
 

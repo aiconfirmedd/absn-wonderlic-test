@@ -1,4 +1,4 @@
-# Wonderlic strategy research
+# Wonderholic Guide, Quiz & Understanding — ABSN research
 
 Research date: 2026-08-20
 

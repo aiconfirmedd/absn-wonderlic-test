@@ -15,19 +15,19 @@ async function render() {
   );
 }
 
-test("renders the Xu Xi study desk", async () => {
+test("renders the Wonderholic ABSN study guide", async () => {
   const response = await render();
   const html = await response.text();
 
   assert.equal(response.status, 200);
-  assert.match(html, /Xu Xi/);
+  assert.match(html, /Wonderholic/);
   assert.match(html, /Seven methods\. One decision system\./);
-  assert.match(html, /href="\/exam\.html"/);
+  assert.match(html, /href="\/wonderholic-guide-quiz-understanding-absn\.html"/);
   assert.doesNotMatch(html, /Building your site|react-loading-skeleton/);
 });
 
 test("keeps the verified 50-question bank unchanged", async () => {
-  const exam = await readFile(new URL("../public/exam.html", import.meta.url), "utf8");
+  const exam = await readFile(new URL("../public/wonderholic-guide-quiz-understanding-absn.html", import.meta.url), "utf8");
   const bank = exam.match(/const Q = \[[\s\S]*?\n\];/)?.[0];
 
   assert.ok(bank);
@@ -50,4 +50,15 @@ test("keeps the verified 50-question bank unchanged", async () => {
   assert.match(exam, /function selectAnswer\(choice, button\)/);
   assert.match(exam, /function commitAnswer\(\)/);
   assert.match(exam, /id="next" onclick="commitAnswer\(\)" disabled/);
+  assert.match(exam, /id="uploadConsent" type="checkbox"/);
+  assert.match(exam, /if\(uploadConsent\) uploadResults/);
+  assert.match(exam, /role="progressbar" aria-label="Questions completed"/);
+  assert.match(exam, /<form class="start-form" onsubmit="startTest\(event\)">/);
+  assert.match(exam, /id="taker"[^>]+required aria-required="true"/);
+  assert.match(exam, /if\(!name\)/);
+  assert.match(exam, /onclick="startExplore\(\)"/);
+  assert.match(exam, /exploreMode = true/);
+  assert.match(exam, /if\(q\.sh && !exploreMode\)/);
+  assert.match(exam, /if\(exploreMode\)\{[\s\S]*?exitExplore\(\)/);
+  assert.match(exam, /nothing is timed, scored, saved, or uploaded/);
 });

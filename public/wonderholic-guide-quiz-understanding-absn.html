@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Xu Xi · Wonderlic SLE Practice Form 01</title>
+<title>Wonderholic Guide, Quiz & Understanding — ABSN</title>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <style>
   :root{
     --bg:#eef2f8; --card:#ffffff; --ink:#16233a; --sub:#5a6b85;
@@ -26,6 +27,8 @@
   button{cursor:pointer;border:none;border-radius:10px;font-size:16px;font-weight:600}
   .btn-primary{background:var(--accent);color:var(--accent-ink);padding:14px 28px;border-bottom:3px solid var(--gold)}
   .btn-primary:hover{filter:brightness(1.1)}
+  .btn-secondary{background:#fff;border:2px solid var(--accent);color:var(--accent);padding:12px 22px}
+  .btn-secondary:hover{background:#f4f7fb}
   .topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
   .timer{font-size:28px;font-weight:800;font-variant-numeric:tabular-nums;color:var(--accent)}
   .timer.low{color:var(--bad)}
@@ -40,10 +43,10 @@
   .kbdnote{font-size:13px;color:var(--sub);margin-top:14px}
   .answer-actions{align-items:center;background:var(--card);border-top:1px solid var(--line);display:flex;gap:14px;justify-content:space-between;margin-top:18px;padding-top:16px;position:sticky;bottom:0}
   .answer-actions .kbdnote{margin:0}
+  .nav-buttons{display:flex;gap:10px}
   .next-btn{min-width:150px}
   .next-btn:disabled{cursor:not-allowed;filter:none;opacity:.42;transform:none}
   .score-big{font-size:56px;font-weight:800}
-  .score-good{color:var(--good)} .score-mid{color:var(--warn)} .score-bad{color:var(--bad)}
   table{width:100%;border-collapse:collapse;margin:10px 0}
   th,td{padding:8px 10px;text-align:left;border-bottom:1px solid var(--line);font-size:14px}
   th{color:var(--accent);font-weight:700}
@@ -57,12 +60,21 @@
   .hidden{display:none}
   .center{text-align:center}
   kbd{background:var(--pale);color:var(--accent);border-radius:4px;padding:1px 6px;font-size:13px}
-  .study-link{align-items:center;color:var(--accent);display:inline-flex;font-size:13px;font-weight:700;gap:6px;margin:2px 0 14px}
+  .study-link{align-items:center;color:var(--accent);display:inline-flex;font-size:13px;font-weight:700;gap:6px;margin:2px 0 14px;min-height:44px}
   .study-link.hidden{display:none}
   .study-link:hover{text-decoration:underline;text-underline-offset:3px}
   .start-form{display:flex;gap:10px;margin:22px 0 10px}
+  .start-field{display:flex;flex:1;flex-direction:column;gap:6px}
+  .start-field label{font-size:13px;font-weight:700}
   .start-form input{border:1px solid var(--line);border-radius:10px;font-size:16px;min-width:0;padding:12px 14px;width:100%}
   .start-cue{color:var(--sub);font-size:13px;margin-bottom:18px;text-align:center}
+  .explore-start{width:100%;margin-bottom:10px}
+  .explore-help{background:#e9f2fc;border-left:4px solid var(--accent2);border-radius:8px;color:#10395f;font-size:14px;line-height:1.5;margin-bottom:16px;padding:10px 12px}
+  .explore-answer{background:#f4f9ff;border:1px solid var(--line);border-radius:10px;margin-top:16px;padding:14px 16px}
+  .explore-answer p{font-size:14px;margin-top:6px}
+  .privacy-choice{align-items:flex-start;background:#f4f7fb;border:1px solid var(--line);border-radius:10px;display:flex;font-size:13px;gap:10px;line-height:1.45;margin:10px 0 8px;padding:12px}
+  .privacy-choice input{flex:0 0 auto;height:20px;margin-top:1px;width:20px}
+  .privacy-note{color:var(--sub);font-size:12px;line-height:1.5;margin-bottom:18px}
   .prep-details{margin-top:18px}
 
   .method{border-left:4px solid var(--accent2);background:#f4f9ff;border-radius:8px;padding:14px 16px;margin-bottom:12px;animation:qIn .3s ease-out both}
@@ -71,6 +83,7 @@
   details{border:1px solid var(--line);border-radius:10px;padding:12px 16px;margin-top:8px;background:#fbfcfe}
   summary{cursor:pointer;font-weight:700;color:var(--accent);font-size:16px}
   details[open] summary{margin-bottom:12px}
+  .result-section{margin-top:18px}
 
   /* ---- motion ---- */
   .card{animation:cardIn .34s cubic-bezier(.22,.68,.35,1) both}
@@ -101,6 +114,7 @@
   .btn-primary:hover{transform:translateY(-1px);box-shadow:0 5px 16px rgba(31,48,73,.28)}
   .btn-primary:active{transform:translateY(0)}
   :focus-visible{outline:3px solid var(--accent2);outline-offset:2px;border-radius:8px}
+  .qtext:focus{outline:none}
   input:focus{outline:none;border-color:var(--accent2);box-shadow:0 0 0 3px rgba(49,143,228,.22)}
 
   /* ---- responsive ---- */
@@ -117,6 +131,8 @@
     .start-form{display:block}
     .answer-actions{align-items:stretch;flex-direction:column;padding-bottom:4px}
     .answer-actions .kbdnote{text-align:center}
+    .nav-buttons{display:grid;grid-template-columns:1fr 1fr}
+    .nav-buttons .btn-primary,.nav-buttons .btn-secondary{width:100%}
   }
 
   /* ---- respect reduced motion ---- */
@@ -126,20 +142,26 @@
 </style>
 </head>
 <body>
-<div class="wrap">
-  <a class="study-link" id="studyLink" href="/" aria-label="Return to Xu Xi study textbook">← Xu Xi study textbook</a>
+<main class="wrap">
+  <a class="study-link" id="studyLink" href="/" aria-label="Return to Wonderholic ABSN guide">← Wonderholic ABSN guide</a>
 
   <!-- START SCREEN -->
   <div id="start" class="card">
     <div class="hero">
-      <h1>Xu Xi · Practice Form 01</h1>
-      <p class="sub">50 verified questions · 12 minutes · realistic SLE-style mix and mechanics</p>
+      <h1>Wonderholic Guide, Quiz & Understanding — ABSN</h1>
+      <p class="sub">50 verified questions · 12 minutes · SLE-format practice mix</p>
     </div>
-    <div class="start-form">
-      <input id="taker" placeholder="Your first name" maxlength="60" autocomplete="given-name">
-      <button class="btn-primary" onclick="startTest()">Start 12-Minute Test</button>
-    </div>
-    <p class="start-cue">Select an answer, then press Next. Leave the name blank to practice anonymously. Results are sent after submission.</p>
+    <form class="start-form" onsubmit="startTest(event)">
+      <div class="start-field">
+        <label for="taker">First name</label>
+        <input id="taker" placeholder="Enter your first name" maxlength="60" autocomplete="given-name" required aria-required="true">
+      </div>
+      <button class="btn-primary" type="submit">Start 12-Minute Quiz</button>
+    </form>
+    <button class="btn-secondary explore-start" type="button" onclick="startExplore()">Explore All Questions — No Timer or Score</button>
+    <p class="start-cue">The timed quiz requires your first name. Explore mode collects no name or result.</p>
+    <label class="privacy-choice"><input id="uploadConsent" type="checkbox"> <span>Send my detailed result to the private ABSN study record after the test. This includes your first name, score, category totals, each answer, the correct answers, and time per question.</span></label>
+    <p class="privacy-note">Optional. Leave unchecked to keep the result in this browser only. The site owner can access submitted records through the secured database dashboard; this page’s browser key cannot read them. Submitted records remain until the site owner deletes them.</p>
     <div id="attemptnote"></div>
     <details class="prep-details">
     <summary>Review rules and score strategy</summary>
@@ -151,10 +173,10 @@
       <li>This practice score counts one point per correct answer and does not subtract for errors.</li>
       <li>Select with a tap or keys <kbd>1</kbd>–<kbd>5</kbd> / <kbd>A</kbd>–<kbd>E</kbd>, then press <b>Next</b> to log the answer.</li>
     </ul>
-    <h2>The 4 rules that raise your score</h2>
+    <h2>Four pacing rules for this practice form</h2>
     <ul>
       <li><b>20-second rule:</b> if a question will take more than ~20s, pick the most plausible answer and move. A hard question is worth the same 1 point as an easy one.</li>
-      <li><b>First 25 are your points:</b> early questions are easiest. Bank them fast and accurately — target under 10s each.</li>
+      <li><b>Protect the early items:</b> this form begins with easier questions. Bank them accurately before the difficulty rises.</li>
       <li><b>Read the question stem first</b> on word problems; know what's asked before parsing numbers.</li>
       <li><b>Choose with elimination:</b> remove obviously wrong options, then commit to the best supported answer.</li>
     </ul>
@@ -163,28 +185,33 @@
   </div>
 
   <!-- TEST SCREEN -->
-  <div id="test" class="card hidden">
+  <section id="test" class="card hidden" aria-label="Timed practice exam">
     <div class="topbar">
       <span class="qnum" id="qnum" aria-live="polite"></span>
-      <span class="timer" id="timer">12:00</span>
+      <span class="timer" id="timer" role="timer" aria-label="Time remaining">12:00</span>
     </div>
     <div class="bars">
-      <div class="bar" id="pbar"><i style="width:0%"></i></div>
-      <div class="bar" id="tbar"><i style="width:100%"></i></div>
+      <div class="bar" id="pbar" role="progressbar" aria-label="Questions completed" aria-valuemin="0" aria-valuemax="50" aria-valuenow="0"><i style="width:0%"></i></div>
+      <div class="bar" id="tbar" role="progressbar" aria-label="Time remaining in seconds" aria-valuemin="0" aria-valuemax="720" aria-valuenow="720"><i style="width:100%"></i></div>
     </div>
-    <div class="qtext" id="qtext"></div>
+    <div class="explore-help hidden" id="exploreHelp">Explore mode: browse all 50 questions freely. Answers and speed strategies are shown; nothing is timed, scored, saved, or uploaded.</div>
+    <div class="qtext" id="qtext" role="heading" aria-level="2" aria-live="polite" aria-atomic="true" tabindex="-1"></div>
     <div id="qsvg"></div>
     <div class="opts" id="opts"></div>
+    <div class="explore-answer hidden" id="exploreAnswer" role="region" aria-label="Answer and strategy"></div>
     <div class="answer-actions">
-      <div class="kbdnote">Select: <kbd>1</kbd>–<kbd>5</kbd> or <kbd>A</kbd>–<kbd>E</kbd> · Advance: <kbd>Enter</kbd></div>
-      <button class="btn-primary next-btn" id="next" onclick="commitAnswer()" disabled>Next question</button>
+      <div class="kbdnote" id="keyboardHelp">Select: <kbd>1</kbd>–<kbd>5</kbd> or <kbd>A</kbd>–<kbd>E</kbd> · Advance: <kbd>Enter</kbd></div>
+      <div class="nav-buttons">
+        <button class="btn-secondary hidden" id="previous" onclick="previousQuestion()">Previous</button>
+        <button class="btn-primary next-btn" id="next" onclick="commitAnswer()" disabled>Next question</button>
+      </div>
     </div>
-  </div>
+  </section>
 
   <!-- RESULTS SCREEN -->
   <div id="results" class="card hidden"></div>
 
-</div>
+</main>
 
 <script>
 // Question bank v2 — rebuilt after adversarial review (5 blind solvers verified key, 5 item critics, 1 structural critic).
@@ -545,11 +572,11 @@ function methodCard(cat, m, extraTag){
 }
 
 // ---- state ----
-let idx = 0, answers = [], qStart = 0, testStart = 0, timerInt = null, curOrder = null, selectedChoice = null;
+let idx = 0, answers = [], qStart = 0, testStart = 0, timerInt = null, curOrder = null, selectedChoice = null, uploadConsent = false, exploreMode = false;
 const TOTAL_SEC = 720, SLOW_SEC = 25;
 const SUPA_URL = "https://mzrcsgympluneeodssrk.supabase.co";
 const SUPA_KEY = "sb_publishable_tfp6IZ2buUA5vAAJM5nZKg_4WJvUbej"; // publishable key: safe to embed, insert-only via RLS
-let takerName = "anonymous";
+let takerName = "";
 
 function $(id){ return document.getElementById(id); }
 
@@ -559,20 +586,60 @@ if (attempts > 0) {
   $("attemptnote").innerHTML = `<div class="warnbox">Attempt #${attempts+1}. You've seen these questions — repeat scores run high. Treat PACE and category accuracy as the signal, not the raw score.</div>`;
 }
 
-document.addEventListener("DOMContentLoaded", ()=>{
+function startTest(event){
+  event.preventDefault();
   const t = $("taker");
-  if(t) t.addEventListener("keydown", e=>{ if(e.key==="Enter") startTest(); });
-});
-
-function startTest(){
-  const t = $("taker");
-  if(t && t.value.trim()) takerName = t.value.trim().slice(0,60);
-  $("start").classList.add("hidden");
-  $("test").classList.remove("hidden");
-  $("studyLink").classList.add("hidden");
+  const name = t.value.trim();
+  if(!name){
+    t.setCustomValidity("Enter your first name.");
+    t.reportValidity();
+    t.addEventListener("input", ()=>t.setCustomValidity(""), {once:true});
+    return;
+  }
+  t.setCustomValidity("");
+  exploreMode = false;
+  idx = 0;
+  answers = [];
+  takerName = name.slice(0,60);
+  uploadConsent = $("uploadConsent").checked;
+  $("test").setAttribute("aria-label", "Timed practice exam");
+  $("timer").textContent = "12:00";
+  $("timer").setAttribute("role", "timer");
+  $("timer").setAttribute("aria-label", "Time remaining");
+  $("tbar").classList.remove("hidden", "warn", "crit");
+  $("exploreHelp").classList.add("hidden");
+  $("exploreAnswer").classList.add("hidden");
+  $("previous").classList.add("hidden");
+  $("pbar").setAttribute("aria-label", "Questions completed");
+  $("keyboardHelp").innerHTML = "Select: <kbd>1</kbd>–<kbd>5</kbd> or <kbd>A</kbd>–<kbd>E</kbd> · Advance: <kbd>Enter</kbd>";
+  beginQuestions();
   testStart = Date.now();
   timerInt = setInterval(tick, 250);
   window.onbeforeunload = () => "Your test is in progress — leaving will lose it.";
+}
+
+function startExplore(){
+  exploreMode = true;
+  uploadConsent = false;
+  idx = 0;
+  answers = [];
+  $("test").setAttribute("aria-label", "Question explorer");
+  $("timer").textContent = "Explore";
+  $("timer").removeAttribute("role");
+  $("timer").setAttribute("aria-label", "Explore mode");
+  $("tbar").classList.add("hidden");
+  $("exploreHelp").classList.remove("hidden");
+  $("exploreAnswer").classList.remove("hidden");
+  $("previous").classList.remove("hidden");
+  $("pbar").setAttribute("aria-label", "Current question");
+  $("keyboardHelp").innerHTML = "Navigate: <kbd>←</kbd> Previous · <kbd>→</kbd> or <kbd>Enter</kbd> Next";
+  beginQuestions();
+}
+
+function beginQuestions(){
+  $("start").classList.add("hidden");
+  $("test").classList.remove("hidden");
+  $("studyLink").classList.add("hidden");
   document.addEventListener("keydown", keyAnswer);
   showQ();
 }
@@ -586,6 +653,7 @@ function tick(){
   el.classList.toggle("low", left <= 120);
   const tb = $("tbar");
   tb.firstElementChild.style.width = (left / TOTAL_SEC * 100) + "%";
+  tb.setAttribute("aria-valuenow", Math.max(left, 0));
   tb.classList.toggle("warn", left <= 180 && left > 60);
   tb.classList.toggle("crit", left <= 60);
 }
@@ -599,7 +667,7 @@ function showQ(){
   $("qsvg").innerHTML = q.svg || "";
   // shuffle option order for order-independent items so retakes can't memorize letters
   curOrder = q.o.map((_,i)=>i);
-  if(q.sh){
+  if(q.sh && !exploreMode){
     for(let i=curOrder.length-1;i>0;i--){
       const j = Math.floor(Math.random()*(i+1));
       [curOrder[i],curOrder[j]] = [curOrder[j],curOrder[i]];
@@ -616,17 +684,32 @@ function showQ(){
     b.onclick = ()=>selectAnswer(oi,b);
     box.appendChild(b);
   });
-  $("next").disabled = true;
-  $("next").textContent = idx === Q.length - 1 ? "Finish & submit" : "Next question";
-  $("pbar").firstElementChild.style.width = (idx / Q.length * 100) + "%";
+  $("next").disabled = !exploreMode;
+  $("next").textContent = idx === Q.length - 1 ? (exploreMode ? "Exit explorer" : "Finish & submit") : "Next question";
+  $("previous").disabled = idx === 0;
+  $("exploreAnswer").innerHTML = exploreMode ? `<p><b>Correct answer:</b> ${q.o[q.a]}</p><p>${q.e}</p><div class="tip">⚡ ${q.tip}</div>` : "";
+  const progress = exploreMode ? idx + 1 : idx;
+  $("pbar").firstElementChild.style.width = (progress / Q.length * 100) + "%";
+  $("pbar").setAttribute("aria-valuenow", progress);
   window.scrollTo({top:0, behavior:"instant"});
+  $("qtext").focus({preventScroll:true});
 }
 
 function keyAnswer(ev){
   if($("test").classList.contains("hidden")) return;
   const k = ev.key.toLowerCase();
+  if(exploreMode && k === "arrowleft"){
+    ev.preventDefault();
+    previousQuestion();
+    return;
+  }
+  if(exploreMode && k === "arrowright"){
+    ev.preventDefault();
+    commitAnswer();
+    return;
+  }
   if(k === "enter"){
-    if(selectedChoice !== null) commitAnswer();
+    if(exploreMode || selectedChoice !== null) commitAnswer();
     return;
   }
   let pos = -1;
@@ -647,10 +730,29 @@ function selectAnswer(choice, button){
 }
 
 function commitAnswer(){
+  if(exploreMode){
+    idx++;
+    if(idx >= Q.length) exitExplore(); else showQ();
+    return;
+  }
   if(selectedChoice === null) return;
   answers.push({choice:selectedChoice, sec:(Date.now()-qStart)/1000});
   idx++;
   if(idx >= Q.length) finish(); else showQ();
+}
+
+function previousQuestion(){
+  if(!exploreMode || idx === 0) return;
+  idx--;
+  showQ();
+}
+
+function exitExplore(){
+  document.removeEventListener("keydown", keyAnswer);
+  $("test").classList.add("hidden");
+  $("start").classList.remove("hidden");
+  $("studyLink").classList.remove("hidden");
+  window.scrollTo(0,0);
 }
 
 function finish(){
@@ -660,6 +762,7 @@ function finish(){
   try { localStorage.setItem("wl_attempts", attempts + 1); } catch(e) {}
   while(answers.length < Q.length) answers.push({choice:null, sec:0, unreached:true});
   $("pbar").firstElementChild.style.width = "100%";
+  $("pbar").setAttribute("aria-valuenow", Q.length);
   $("test").classList.add("hidden");
   $("studyLink").classList.remove("hidden");
   const r = $("results");
@@ -675,14 +778,11 @@ function finish(){
   const answered = answers.filter(a=>!a.unreached);
   const avgSec = answered.length ? answered.reduce((s,a)=>s+a.sec,0)/answered.length : 0;
 
-  const cls = correct >= 26 ? "score-good" : correct >= 21 ? "score-mid" : "score-bad";
-  const verdict = correct >= 26 ? "Strong practice run — review slow items to protect the margin."
-    : correct >= 21 ? "Developing run — drill the weakest categories before another timed attempt."
-    : "Foundation run — review every miss below, then repeat the methods untimed.";
+  const verdict = "Review missed and slow items, then compare your next run by category and pace.";
 
   let html = `<div class="center">
-      <p class="sub">Your Wonderlic score (1 point per correct answer)</p>
-      <div class="score-big ${cls}">${correct}</div>
+      <p class="sub">Your Wonderholic practice score (1 point per correct answer)</p>
+      <div class="score-big">${correct}</div>
       <p><b>${verdict}</b></p>
       <p class="sub">You reached ${answered.length} of 50 · ${avgSec.toFixed(1)}s average per answered question (overall pace: 14.4s).</p>
       ${attempts > 0 ? `<p class="sub">Attempt #${attempts+1} — repeat scores are inflated by memory.</p>` : ""}
@@ -691,24 +791,23 @@ function finish(){
     <h2>Category breakdown</h2>
     <table><tr><th>Category</th><th>Correct</th><th>Focus?</th></tr>`;
   Object.entries(cats).forEach(([c,v])=>{
-    const pct = v.right/v.total;
-    html += `<tr><td>${c}</td><td>${v.right} / ${v.total}</td><td>${pct<0.7?"⚠️ weakest — drill this first":"✓ solid"}</td></tr>`;
+    html += `<tr><td>${c}</td><td>${v.right} / ${v.total}</td><td>${v.right<v.total?"Review misses":"No misses"}</td></tr>`;
   });
   html += "</table>";
 
-  const weak = Object.entries(cats).filter(([,v]) => v.right/v.total < 0.7)
-    .sort((a,b) => (a[1].right/a[1].total) - (b[1].right/b[1].total));
+  const weak = Object.entries(cats).filter(([,v]) => v.right < v.total)
+    .sort((a,b) => (a[1].right/a[1].total) - (b[1].right/b[1].total)).slice(0,3);
   if(weak.length){
-    html += `<h2>Drill these first — ${weak.length} weak ${weak.length===1?"category":"categories"}</h2>`;
+    html += `<h2>Lowest-accuracy ${weak.length===1?"category":"categories"}</h2>`;
     weak.forEach(([c,v]) => {
       if(METHODS[c]) html += methodCard(c, METHODS[c], `<span class="tag">${v.right}/${v.total}</span>`);
     });
   } else {
-    html += `<h2>No weak categories</h2><p>Every category cleared 70%. Work the full method list below for speed.</p>`;
+    html += `<h2>No missed categories</h2><p>Every category was answered correctly. Use the slow-item review for pace.</p>`;
   }
 
   const misses = Q.map((q,i)=>({q,i,a:answers[i]})).filter(x=> x.a.choice !== x.q.a);
-  html += `<h2>Missed & unreached (${misses.length}) — how to solve each one faster</h2>`;
+  html += `<details class="result-section"><summary>Review missed & unreached (${misses.length})</summary>`;
   if(!misses.length) html += "<p>Perfect run. Take it again — the real one won't be this kind.</p>";
   misses.forEach(({q,i,a})=>{
     const status = a.unreached ? "NOT REACHED" : "Your answer: " + q.o[a.choice];
@@ -721,10 +820,11 @@ function finish(){
       <div class="tip">⚡ Faster next time: ${q.tip}</div>
     </div>`;
   });
+  html += `</details>`;
 
   const slow = Q.map((q,i)=>({q,i,a:answers[i]})).filter(x=> x.a.choice === x.q.a && x.a.sec > SLOW_SEC);
   if(slow.length){
-    html += `<h2>Right but slow (${slow.length}) — these cost you unreached questions</h2>`;
+    html += `<details class="result-section"><summary>Review right but slow (${slow.length})</summary>`;
     slow.forEach(({q,i,a})=>{
       html += `<div class="miss slow">
         <h3>Q${i+1} <span class="tag">${q.c}</span> <span class="tag">${a.sec.toFixed(0)}s</span></h3>
@@ -733,8 +833,9 @@ function finish(){
         <div class="tip">⚡ ${q.tip}</div>
       </div>`;
     });
+    html += `</details>`;
   }
-  html = '<div id="upstatus" class="warnbox">Uploading results…</div>' + html;
+  html = `<div id="upstatus" class="warnbox">${uploadConsent ? "Uploading your consented result…" : "Result kept in this browser only — nothing was uploaded."}</div>` + html;
   html += `<h2>Every method — study list</h2>
     <details><summary>Open all ${Object.keys(METHODS).length} question-type playbooks</summary>
     ${Object.entries(METHODS).map(([c,m]) => methodCard(c, m)).join("")}</details>`;
@@ -743,14 +844,14 @@ function finish(){
   r.querySelectorAll(".miss").forEach((el,i)=>{ el.style.animationDelay = Math.min(i*45, 600) + "ms"; });
   countUp(r.querySelector(".score-big"), correct);
   window.scrollTo(0,0);
-  uploadResults({
-    taker_name: takerName,
-    score: correct,
-    answered: answered.length,
-    avg_sec: +avgSec.toFixed(1),
-    categories: cats,
-    answers: Q.map((q,i)=>({ n:i+1, category:q.c, question:q.t.slice(0,120), your_answer: answers[i].choice===null?null:q.o[answers[i].choice], correct_answer: q.o[q.a], correct: answers[i].choice===q.a, seconds: +answers[i].sec.toFixed(1) }))
-  });
+  if(uploadConsent) uploadResults({
+      taker_name: takerName,
+      score: correct,
+      answered: answered.length,
+      avg_sec: +avgSec.toFixed(1),
+      categories: cats,
+      answers: Q.map((q,i)=>({ n:i+1, category:q.c, question:q.t.slice(0,120), your_answer: answers[i].choice===null?null:q.o[answers[i].choice], correct_answer: q.o[q.a], correct: answers[i].choice===q.a, seconds: +answers[i].sec.toFixed(1) }))
+    });
 }
 
 function countUp(el, target){

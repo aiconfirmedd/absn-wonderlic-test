@@ -70,7 +70,7 @@ const videos = [
   {
     source: "JobTestPrep",
     title: "Wonderlic Test — Learn How to Ace This Cognitive Test",
-    note: "Best overview of format, question families, repeated practice, and full timed simulations.",
+    note: "A broad overview of format, question families, repeated practice, and full timed simulations.",
     href: "https://www.youtube.com/watch?v=Ordmd9PZB_U",
   },
   {
@@ -91,31 +91,31 @@ export default function Home() {
   return (
     <main>
       <header className="site-header">
-        <a className="brand" href="#top" aria-label="Xu Xi study desk home">
-          <span className="brand-mark">XX</span>
+        <a className="brand" href="#top" aria-label="Wonderholic ABSN study guide home">
+          <span className="brand-mark">WH</span>
           <span>
-            <strong>Xu Xi</strong>
-            <small>ABSN Study Desk</small>
+            <strong>Wonderholic</strong>
+            <small>Guide · Quiz · Understanding</small>
           </span>
         </a>
         <nav aria-label="Primary navigation">
           <a href="#textbook">Textbook</a>
           <a href="#evidence">Watch</a>
           <a href="#memory">Memory sheet</a>
-          <a className="nav-cta" href="/exam.html">Open exam</a>
+          <a className="nav-cta" href="/wonderholic-guide-quiz-understanding-absn.html">Open quiz</a>
         </nav>
       </header>
 
       <section className="hero" id="top">
         <div className="hero-copy">
-          <p className="eyebrow">Wonderlic SLE practice · ABSN admissions</p>
+          <p className="eyebrow">Wonderholic guide · quiz · understanding · ABSN</p>
           <h1>Think clearly<br />under twelve minutes.</h1>
           <p className="hero-lede">
             A verified 50-question practice exam paired with a compact textbook
             for pace, memory, and decision-making under pressure.
           </p>
           <div className="hero-actions">
-            <a className="button button-primary" href="/exam.html">Start the timed exam</a>
+            <a className="button button-primary" href="/wonderholic-guide-quiz-understanding-absn.html">Start the timed quiz</a>
             <a className="button button-secondary" href="#textbook">Study the method first</a>
           </div>
           <p className="independent-note">Independent practice resource. Not affiliated with Wonderlic or a university.</p>
@@ -177,7 +177,7 @@ export default function Home() {
           <p className="eyebrow">Research shelf</p>
           <h2>Watch the method. Then solve it.</h2>
           <p>
-            These are the strongest free starting videos found for format recognition and worked practice.
+            These are three free starting videos for format recognition and worked practice.
             Official Wonderlic guidance remains the authority for timing and test-day rules.
           </p>
         </div>
@@ -250,11 +250,11 @@ export default function Home() {
           <h2>One clean run. No interruptions.</h2>
           <p>Your answers, category accuracy, and time per question appear after submission.</p>
         </div>
-        <a className="button button-gold" href="/exam.html">Begin Xu Xi’s practice exam</a>
+        <a className="button button-gold" href="/wonderholic-guide-quiz-understanding-absn.html">Begin the ABSN practice quiz</a>
       </section>
 
       <footer>
-        <div className="brand footer-brand"><span className="brand-mark">XX</span><span><strong>Xu Xi</strong><small>ABSN Study Desk</small></span></div>
+        <div className="brand footer-brand"><span className="brand-mark">WH</span><span><strong>Wonderholic</strong><small>Guide · Quiz · Understanding — ABSN</small></span></div>
         <p>Prepared for focused practice. Questions remain unchanged from the verified Form 01 bank.</p>
       </footer>
     </main>

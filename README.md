@@ -1,6 +1,6 @@
-# Xu Xi Wonderlic Study Desk
+# Wonderholic Guide, Quiz & Understanding — ABSN
 
-A compact ABSN admissions study textbook and verified 50-question, 12-minute Wonderlic SLE-style practice exam.
+A compact ABSN study guide and verified 50-question, 12-minute Wonderlic SLE-style practice quiz.
 
 ## Run
 
