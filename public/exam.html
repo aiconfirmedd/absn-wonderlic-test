@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Xu Xi · Wonderlic SLE Practice Form 01</title>
+<style>
+  :root{
+    --bg:#eef2f8; --card:#ffffff; --ink:#16233a; --sub:#5a6b85;
+    --accent:#1f3049; --accent2:#318FE4; --gold:#ffde59; --pale:#c9d8ec;
+    --accent-ink:#ffffff; --good:#1a7a4a; --bad:#b3282d;
+    --warn:#8a5a00; --line:#d3dfef;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+  body{background:var(--bg);color:var(--ink);min-height:100vh;display:flex;justify-content:center;padding:24px 12px}
+  .wrap{width:100%;max-width:760px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:28px;margin-bottom:16px;box-shadow:0 1px 4px rgba(20,35,60,.06)}
+  h1{font-size:26px;margin-bottom:6px;color:var(--accent)}
+  h2{color:var(--accent)}
+  .hero{background:linear-gradient(135deg,#1f3049,#003e71);color:#fff;border-radius:14px;padding:22px 24px;margin:-28px -28px 20px;border-bottom:4px solid var(--gold)}
+  .hero h1{color:#fff;margin-bottom:4px} .hero .sub{color:var(--pale)}
+  h2{font-size:19px;margin:18px 0 8px}
+  p,li{font-size:15px;line-height:1.55;color:var(--ink)}
+  .sub{color:var(--sub)}
+  ul{margin:8px 0 8px 22px}
+  button{cursor:pointer;border:none;border-radius:10px;font-size:16px;font-weight:600}
+  .btn-primary{background:var(--accent);color:var(--accent-ink);padding:14px 28px;border-bottom:3px solid var(--gold)}
+  .btn-primary:hover{filter:brightness(1.1)}
+  .topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+  .timer{font-size:28px;font-weight:800;font-variant-numeric:tabular-nums;color:var(--accent)}
+  .timer.low{color:var(--bad)}
+  .qnum{font-size:14px;color:var(--sub);font-weight:600}
+  .qtext{font-size:19px;line-height:1.5;margin:10px 0 14px;white-space:pre-line}
+  #qsvg{margin:0 0 14px} #qsvg svg{max-width:100%;height:auto;color:var(--ink)}
+  .opts{display:flex;flex-direction:column;gap:10px}
+  .opt{background:#f4f7fb;border:2px solid transparent;border-radius:10px;padding:13px 16px;font-size:16px;text-align:left;color:var(--ink)}
+  .opt:hover:not(:disabled){border-color:var(--accent2);background:#e9f2fc}
+  .opt.selected{background:#e5f0fb;border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+  .opt:disabled{opacity:.55;cursor:default}
+  .kbdnote{font-size:13px;color:var(--sub);margin-top:14px}
+  .answer-actions{align-items:center;background:var(--card);border-top:1px solid var(--line);display:flex;gap:14px;justify-content:space-between;margin-top:18px;padding-top:16px;position:sticky;bottom:0}
+  .answer-actions .kbdnote{margin:0}
+  .next-btn{min-width:150px}
+  .next-btn:disabled{cursor:not-allowed;filter:none;opacity:.42;transform:none}
+  .score-big{font-size:56px;font-weight:800}
+  .score-good{color:var(--good)} .score-mid{color:var(--warn)} .score-bad{color:var(--bad)}
+  table{width:100%;border-collapse:collapse;margin:10px 0}
+  th,td{padding:8px 10px;text-align:left;border-bottom:1px solid var(--line);font-size:14px}
+  th{color:var(--accent);font-weight:700}
+  .miss{border-left:4px solid var(--bad);padding:14px 16px;background:#fdf6f6;border-radius:8px;margin-bottom:12px}
+  .miss.slow{border-left-color:var(--warn);background:#fdfaf3}
+  .miss h3{font-size:15px;margin-bottom:6px}
+  .tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;background:var(--pale);color:var(--accent);border-radius:6px;padding:2px 8px;margin-right:6px}
+  .ans{font-size:14px;margin:4px 0}
+  .tip{font-size:14px;color:#10395f;background:#e9f2fc;border-left:3px solid var(--accent2);border-radius:6px;padding:8px 10px;margin-top:6px}
+  .warnbox{font-size:14px;color:var(--warn);background:#fdf8ee;border:1px solid #f0e2c4;border-radius:8px;padding:10px 12px;margin-top:12px}
+  .hidden{display:none}
+  .center{text-align:center}
+  kbd{background:var(--pale);color:var(--accent);border-radius:4px;padding:1px 6px;font-size:13px}
+  .study-link{align-items:center;color:var(--accent);display:inline-flex;font-size:13px;font-weight:700;gap:6px;margin:2px 0 14px}
+  .study-link.hidden{display:none}
+  .study-link:hover{text-decoration:underline;text-underline-offset:3px}
+  .start-form{display:flex;gap:10px;margin:22px 0 10px}
+  .start-form input{border:1px solid var(--line);border-radius:10px;font-size:16px;min-width:0;padding:12px 14px;width:100%}
+  .start-cue{color:var(--sub);font-size:13px;margin-bottom:18px;text-align:center}
+  .prep-details{margin-top:18px}
+
+  .method{border-left:4px solid var(--accent2);background:#f4f9ff;border-radius:8px;padding:14px 16px;margin-bottom:12px;animation:qIn .3s ease-out both}
+  .method h3{font-size:15px;margin-bottom:8px}
+  .mlist{margin:6px 0 8px 20px} .mlist li{font-size:14px;line-height:1.5;margin-bottom:4px}
+  details{border:1px solid var(--line);border-radius:10px;padding:12px 16px;margin-top:8px;background:#fbfcfe}
+  summary{cursor:pointer;font-weight:700;color:var(--accent);font-size:16px}
+  details[open] summary{margin-bottom:12px}
+
+  /* ---- motion ---- */
+  .card{animation:cardIn .34s cubic-bezier(.22,.68,.35,1) both}
+  @keyframes cardIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+  @keyframes qIn{from{opacity:.25;transform:translateY(7px)}to{opacity:1;transform:none}}
+  @keyframes optIn{from{opacity:.25;transform:translateY(5px)}to{opacity:1;transform:none}}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.45}}
+  @keyframes popIn{from{opacity:0;transform:scale(.85)}to{opacity:1;transform:none}}
+  #qtext,#qsvg{animation:qIn .17s ease-out both}
+  .opt{animation:optIn .17s ease-out both}
+  .timer.low{animation:pulse 1s ease-in-out infinite}
+  .score-big{animation:popIn .4s cubic-bezier(.2,1.3,.4,1) both}
+  .miss{animation:qIn .3s ease-out both}
+
+  /* ---- progress + time bars ---- */
+  .bars{display:flex;flex-direction:column;gap:5px;margin-bottom:16px}
+  .bar{height:5px;background:var(--pale);border-radius:99px;overflow:hidden}
+  .bar>i{display:block;height:100%;border-radius:99px;transition:width .35s cubic-bezier(.3,.8,.4,1)}
+  #pbar>i{background:var(--accent2)}
+  #tbar>i{background:var(--accent);transition:width 1s linear,background .4s ease}
+  #tbar.warn>i{background:#c88a00} #tbar.crit>i{background:var(--bad)}
+
+  /* ---- interaction polish ---- */
+  .opt{transition:background .13s ease,border-color .13s ease,transform .08s ease;
+       -webkit-user-select:none;user-select:none;touch-action:manipulation}
+  .opt:active{transform:scale(.985);background:var(--pale)}
+  .btn-primary{transition:transform .12s ease,box-shadow .18s ease,filter .15s ease}
+  .btn-primary:hover{transform:translateY(-1px);box-shadow:0 5px 16px rgba(31,48,73,.28)}
+  .btn-primary:active{transform:translateY(0)}
+  :focus-visible{outline:3px solid var(--accent2);outline-offset:2px;border-radius:8px}
+  input:focus{outline:none;border-color:var(--accent2);box-shadow:0 0 0 3px rgba(49,143,228,.22)}
+
+  /* ---- responsive ---- */
+  @media (max-width:640px){
+    body{padding:10px 8px}
+    .card{padding:20px 16px;border-radius:12px}
+    .hero{margin:-20px -16px 16px;padding:18px 16px}
+    h1{font-size:21px} .qtext{font-size:17px}
+    .opt{padding:15px 14px;font-size:16px}
+    .timer{font-size:24px}
+    .score-big{font-size:46px}
+    #taker{width:100%;margin:0 0 10px!important}
+    .btn-primary{width:100%}
+    .start-form{display:block}
+    .answer-actions{align-items:stretch;flex-direction:column;padding-bottom:4px}
+    .answer-actions .kbdnote{text-align:center}
+  }
+
+  /* ---- respect reduced motion ---- */
+  @media (prefers-reduced-motion:reduce){
+    *,*::before,*::after{animation:none!important;transition:none!important}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="study-link" id="studyLink" href="/" aria-label="Return to Xu Xi study textbook">← Xu Xi study textbook</a>
+
+  <!-- START SCREEN -->
+  <div id="start" class="card">
+    <div class="hero">
+      <h1>Xu Xi · Practice Form 01</h1>
+      <p class="sub">50 verified questions · 12 minutes · realistic SLE-style mix and mechanics</p>
+    </div>
+    <div class="start-form">
+      <input id="taker" placeholder="Your first name" maxlength="60" autocomplete="given-name">
+      <button class="btn-primary" onclick="startTest()">Start 12-Minute Test</button>
+    </div>
+    <p class="start-cue">Select an answer, then press Next. Leave the name blank to practice anonymously. Results are sent after submission.</p>
+    <div id="attemptnote"></div>
+    <details class="prep-details">
+    <summary>Review rules and score strategy</summary>
+    <h2>Practice rules</h2>
+    <ul>
+      <li>Timer starts when you click Start. Auto-submits at 0:00.</li>
+      <li>One question at a time. <b>You must answer to advance — no skipping, no going back</b> in this simulator.</li>
+      <li>No calculator. Keep scratch paper + pencil next to you.</li>
+      <li>This practice score counts one point per correct answer and does not subtract for errors.</li>
+      <li>Select with a tap or keys <kbd>1</kbd>–<kbd>5</kbd> / <kbd>A</kbd>–<kbd>E</kbd>, then press <b>Next</b> to log the answer.</li>
+    </ul>
+    <h2>The 4 rules that raise your score</h2>
+    <ul>
+      <li><b>20-second rule:</b> if a question will take more than ~20s, pick the most plausible answer and move. A hard question is worth the same 1 point as an easy one.</li>
+      <li><b>First 25 are your points:</b> early questions are easiest. Bank them fast and accurately — target under 10s each.</li>
+      <li><b>Read the question stem first</b> on word problems; know what's asked before parsing numbers.</li>
+      <li><b>Choose with elimination:</b> remove obviously wrong options, then commit to the best supported answer.</li>
+    </ul>
+    <div class="warnbox">Official guidance: work in order, do not spend too long on one question, and mark your best choice when you think you know it. Your school’s instructions control on test day.</div>
+    </details>
+  </div>
+
+  <!-- TEST SCREEN -->
+  <div id="test" class="card hidden">
+    <div class="topbar">
+      <span class="qnum" id="qnum" aria-live="polite"></span>
+      <span class="timer" id="timer">12:00</span>
+    </div>
+    <div class="bars">
+      <div class="bar" id="pbar"><i style="width:0%"></i></div>
+      <div class="bar" id="tbar"><i style="width:100%"></i></div>
+    </div>
+    <div class="qtext" id="qtext"></div>
+    <div id="qsvg"></div>
+    <div class="opts" id="opts"></div>
+    <div class="answer-actions">
+      <div class="kbdnote">Select: <kbd>1</kbd>–<kbd>5</kbd> or <kbd>A</kbd>–<kbd>E</kbd> · Advance: <kbd>Enter</kbd></div>
+      <button class="btn-primary next-btn" id="next" onclick="commitAnswer()" disabled>Next question</button>
+    </div>
+  </div>
+
+  <!-- RESULTS SCREEN -->
+  <div id="results" class="card hidden"></div>
+
+</div>
+
+<script>
+// Question bank v2 — rebuilt after adversarial review (5 blind solvers verified key, 5 item critics, 1 structural critic).
+// Mix: Verbal 17, Math 14, Number Series 6, Logic 6, Spatial 3, Quick Recognition 3, General Knowledge 1.
+// Keyed positions balanced A–E on fixed-order items; sh:true items shuffle option order at render.
+// Syllogism keys: True x2, False x2, Not certain x1. Difficulty ramps: easy 1-15, medium 16-35, hard 36-50.
+const VOCAB = ["have similar meanings","have contradictory meanings","mean neither the same nor the opposite"];
+const SYL = ["True","False","Not certain"];
+
+// SVG helpers for spatial items
+const SVG_SEQ = `<svg viewBox="0 0 560 195" xmlns="http://www.w3.org/2000/svg" aria-label="shape sequence">
+ <g stroke="currentColor" fill="none" stroke-width="1.5">
+  <rect x="20" y="10" width="50" height="50"/><rect x="90" y="10" width="50" height="50"/><rect x="160" y="10" width="50" height="50"/><rect x="230" y="10" width="50" height="50"/>
+ </g>
+ <g fill="currentColor">
+  <rect x="20" y="10" width="25" height="25"/>
+  <rect x="115" y="10" width="25" height="25"/>
+  <rect x="185" y="35" width="25" height="25"/>
+ </g>
+ <text x="249" y="45" font-size="28" fill="currentColor">?</text>
+ <g stroke="currentColor" fill="none" stroke-width="1.5">
+  <rect x="20" y="110" width="50" height="50"/><rect x="128" y="110" width="50" height="50"/><rect x="236" y="110" width="50" height="50"/><rect x="344" y="110" width="50" height="50"/><rect x="452" y="110" width="50" height="50"/>
+ </g>
+ <g fill="currentColor">
+  <rect x="20" y="110" width="25" height="25"/>
+  <rect x="153" y="110" width="25" height="25"/>
+  <rect x="236" y="110" width="50" height="50"/>
+  <rect x="369" y="135" width="25" height="25"/>
+  <rect x="452" y="135" width="25" height="25"/>
+ </g>
+ <g font-size="14" fill="currentColor" font-weight="bold">
+  <text x="41" y="180">A</text><text x="149" y="180">B</text><text x="257" y="180">C</text><text x="365" y="180">D</text><text x="473" y="180">E</text>
+ </g>
+</svg>`;
+
+const flagCell = (x, kind) => {
+  // pole+flag shapes per transform of base (pole left, flag top pointing right)
+  if(kind==="base")   return `<rect x="${x+10}" y="5" width="4" height="50" fill="currentColor"/><polygon points="${x+14},8 ${x+44},16 ${x+14},24" fill="currentColor"/>`;
+  if(kind==="mirror") return `<rect x="${x+46}" y="5" width="4" height="50" fill="currentColor"/><polygon points="${x+46},8 ${x+16},16 ${x+46},24" fill="currentColor"/>`;
+  if(kind==="rot180") return `<rect x="${x+46}" y="5" width="4" height="50" fill="currentColor"/><polygon points="${x+46},36 ${x+16},44 ${x+46},52" fill="currentColor"/>`;
+  if(kind==="vflip")  return `<rect x="${x+10}" y="5" width="4" height="50" fill="currentColor"/><polygon points="${x+14},36 ${x+44},44 ${x+14},52" fill="currentColor"/>`;
+  if(kind==="rot90")  return `<rect x="${x+5}" y="10" width="50" height="4" fill="currentColor"/><polygon points="${x+35},14 ${x+43},44 ${x+51},14" fill="currentColor"/>`;
+};
+const SVG_MIRROR = `<svg viewBox="0 0 560 95" xmlns="http://www.w3.org/2000/svg" aria-label="mirror image candidates">
+ ${flagCell(10,"base")}
+ <text x="12" y="75" font-size="12" fill="currentColor">Original</text>
+ <line x1="90" y1="0" x2="90" y2="90" stroke="currentColor" stroke-dasharray="4 3"/>
+ ${flagCell(110,"mirror")}${flagCell(200,"rot180")}${flagCell(290,"base")}${flagCell(380,"vflip")}${flagCell(470,"rot90")}
+ <g font-size="14" fill="currentColor" font-weight="bold">
+  <text x="135" y="80">A</text><text x="225" y="80">B</text><text x="315" y="80">C</text><text x="405" y="80">D</text><text x="495" y="80">E</text>
+ </g>
+</svg>`;
+
+const cells = (x0, list) => list.map(([cx,cy]) => `<rect x="${x0+cx}" y="${15+cy}" width="15" height="15" fill="currentColor"/>`).join("");
+const SVG_ODD = `<svg viewBox="0 0 560 105" xmlns="http://www.w3.org/2000/svg" aria-label="rotated shapes with one mirror image">
+ ${cells(40, [[0,0],[16,0],[32,0],[0,16]])}
+ ${cells(140,[[16,0],[16,16],[16,32],[0,32]])}
+ ${cells(240,[[0,0],[0,16],[0,32],[16,32]])}
+ ${cells(340,[[16,0],[16,16],[16,32],[0,0]])}
+ ${cells(440,[[0,16],[16,16],[32,16],[32,0]])}
+ <g font-size="14" fill="currentColor" font-weight="bold">
+  <text x="55" y="95">A</text><text x="150" y="95">B</text><text x="245" y="95">C</text><text x="355" y="95">D</text><text x="455" y="95">E</text>
+ </g>
+</svg>`;
+
+const Q = [
+ // ---------- EASY (1–15) ----------
+ {c:"Quick Recognition", t:"Which of the following is the EARLIEST date?",
+  o:["Jan 16, 1898","Feb 21, 1889","Feb 2, 1898","Mar 3, 1889","Jan 30, 1889"], a:4,
+  e:"Compare years first: 1889 beats 1898. Among the 1889 dates, January 30 is earliest.",
+  tip:"Scan the YEAR column only, cross out later years, then compare month/day of survivors. 5 seconds max."},
+ {c:"Verbal", t:"ADOPT / ADEPT — These words:",
+  o:VOCAB, a:2,
+  e:"Adopt = take as one's own; adept = highly skilled. Look-alike spelling, unconnected meanings.",
+  tip:"Wonderlic loves near-spelling traps. Define each word in 2 words in your head; ignore how they look."},
+ {c:"Math", t:"What is 40% of 60?",
+  o:["24","30","36","40","100"], a:0,
+  e:"10% of 60 = 6, so 40% = 24.",
+  tip:"Find 10% first, then multiply. 36 (= 60 − 24) catches people who subtract; 100 catches inverted division."},
+ {c:"Number Series", t:"What is the next number in the series?\n8   4   2   1   1/2   1/4   ?",
+  o:["0","1/16","1/8","1/6","1/3"], a:2,
+  e:"Each term is halved. 1/4 ÷ 2 = 1/8.",
+  tip:"Test ÷2 or ×2 first on any shrinking/growing series — it's the most common pattern. 1/16 catches skipping a step."},
+ {c:"Verbal", t:"CHEAP / INEXPENSIVE — These words:",
+  o:VOCAB, a:0,
+  e:"Both mean low-priced.",
+  tip:"Easy synonyms should take 3 seconds. Answer and go — speed banked here pays for hard items later."},
+ {c:"Quick Recognition", t:"How many of the five pairs below are EXACT duplicates?\nNieman, K.M. — Neiman, K.M.\nThomas, G.K. — Thomas, C.K.\nHoff, J.P. — Hoff, J.P.\nPino, L.R. — Pina, L.R.\nWarner, T.S. — Warner, T.S.",
+  o:["1","2","3","4","5"], a:1,
+  e:"Only Hoff and Warner match exactly. Nieman/Neiman (ie vs ei), G.K./C.K., and Pino/Pina differ.",
+  tip:"Compare letter-by-letter at speed; check initials too. Differences hide in vowel swaps and initials."},
+ {c:"Math", t:"A dozen eggs costs $3.60. What do 3 eggs cost?",
+  o:["$0.30","$0.60","$0.90","$1.20","$1.80"], a:2,
+  e:"3 eggs = 1/4 dozen. $3.60 ÷ 4 = $0.90.",
+  tip:"Convert to a clean fraction of the unit (3/12 = 1/4) instead of computing a per-egg price."},
+ {c:"Logic", t:"Assume the first two statements are true. Is the final statement true?\n1. All nurses at Mercy Hospital are licensed.\n2. Dana is a nurse at Mercy Hospital.\n3. Dana is licensed.",
+  o:SYL, a:0,
+  e:"Dana is in the group and the rule covers the whole group. Valid — True.",
+  tip:"'All X are Y' + 'Z is an X' → always True. Memorize the valid patterns so you don't re-derive them."},
+ {c:"Verbal", t:"EXPAND / CONTRACT — These words:",
+  o:VOCAB, a:1,
+  e:"Opposites: grow vs shrink.",
+  tip:"3-second item. Snap answer, next."},
+ {c:"Verbal", t:"FINGER is to HAND as TOE is to ____?",
+  o:["nail","foot","leg","shoe","ankle"], a:1, sh:true,
+  e:"Part-to-whole: a finger is part of a hand, a toe is part of a foot.",
+  tip:"Say the relationship as a sentence first ('a finger is part of a hand'), then plug in the second pair."},
+ {c:"General Knowledge", t:"How many months of the year have exactly 31 days?",
+  o:["4","5","6","7","8"], a:3,
+  e:"Jan, Mar, May, Jul, Aug, Oct, Dec = 7.",
+  tip:"Memorize tonight: 7 months have 31 days, 4 have 30, Feb has 28/29. This exact fact appears often."},
+ {c:"Math", t:"7 × 8 − 6 = ?",
+  o:["44","48","50","52","56"], a:2,
+  e:"56 − 6 = 50.",
+  tip:"Pure arithmetic items are gifts. 5 seconds, no scratch paper. 56 catches forgetting the subtraction."},
+ {c:"Verbal", t:"Four of these words belong together. Which one does NOT?",
+  o:["copper","iron","oak","zinc","nickel"], a:2, sh:true,
+  e:"Oak is a wood; the rest are metals.",
+  tip:"Find the category shared by four of the five (metals); the one left over is the answer. Testing only three leaves you with two candidates."},
+ {c:"Verbal", t:"When the words below are rearranged into their best sentence, is the resulting statement TRUE or FALSE?\nfeathers   than   heavier   is   lead",
+  o:["True","False"], a:0,
+  e:"\"Lead is heavier than feathers.\" True.",
+  tip:"Find subject + verb, hear the sentence, judge it. Don't write it out."},
+ {c:"Quick Recognition", t:"Which word would appear FIRST in the dictionary?",
+  o:["pane","panel","pan","panic","pander"], a:2, sh:true,
+  e:"'Pan' is a prefix of all the others, so it alphabetizes first.",
+  tip:"A shorter word that's a prefix of the others always wins. Compare letter 4 across options to sort the rest."},
+
+ // ---------- MEDIUM (16–35) ----------
+ {c:"Math", t:"A scrub set is priced at $45 and marked 20% off. What is the sale price?",
+  o:["$9","$36","$37","$40.50","$54"], a:1,
+  e:"20% of 45 = 9. 45 − 9 = $36.",
+  tip:"Take 10% and double it, or multiply by 0.8 — pick one method and drill it. $9 is the discount, not the price: read what's asked. $40.50 = subtracting only 10%; $54 = adding instead."},
+ {c:"Number Series", t:"What is the next number?\n2   5   11   23   47   ?",
+  o:["89","92","94","95","96"], a:3,
+  e:"Each term is ×2 + 1. 47 × 2 + 1 = 95.",
+  tip:"If the gaps double (3, 6, 12, 24), the rule is ×2 with a constant — sign unknown until you test the last pair. 94 catches ×2 with no constant at all."},
+ {c:"Verbal", t:"CANDID / FRANK — These words:",
+  o:VOCAB, a:0,
+  e:"Both mean open and honest in speech.",
+  tip:"Both words have one dominant sense — no trap. Confirm and move."},
+ {c:"Logic", t:"Assume the first two statements are true. Is the final statement true?\n1. Brown reads faster than Lee.\n2. Lee reads faster than Cruz.\n3. Cruz reads faster than Brown.",
+  o:SYL, a:1,
+  e:"Brown > Lee > Cruz, so Cruz cannot read faster than Brown. Contradicted — False.",
+  tip:"Contradicted = False; merely unsupported = Not certain. Keep those two verdicts separate — mixing them up is the classic error on this item type."},
+ {c:"Math", t:"An IV runs at 250 mL per hour. How many LITERS does the patient receive in 6 hours?",
+  o:["1.2","1.25","1.5","2.5","15"], a:2,
+  e:"250 × 6 = 1,500 mL = 1.5 L.",
+  tip:"The unit conversion IS the question. Compute in mL, convert last. '15' catches the decimal slip; 1.25 catches ×5 hours."},
+ {c:"Verbal", t:"SCALPEL is to SURGEON as HAMMER is to ____?",
+  o:["nail","toolbox","carpenter","wood","mechanic"], a:2, sh:true,
+  e:"Tool-to-user relationship.",
+  tip:"'Nail' is the trap — associated with hammer but it breaks the tool→user relationship. Match the RELATIONSHIP, not the association."},
+ {c:"Spatial", t:"The shaded quarter moves the same way each step. Which lettered square comes next in the sequence?", svg:SVG_SEQ,
+  o:["Shape A","Shape B","Shape C","Shape D","Shape E"], a:4,
+  e:"The shaded quarter moves clockwise: top-left → top-right → bottom-right → next is bottom-left (E).",
+  tip:"Find the moving element and its direction first. D (same as the last frame) is the 'no-change' trap; A restarts the cycle too early."},
+ {c:"Math", t:"What is 3/8 of 96?",
+  o:["12","24","32","36","72"], a:3,
+  e:"96 ÷ 8 = 12; 12 × 3 = 36.",
+  tip:"Divide by the denominator first — smaller numbers, fewer errors. 12 catches stopping after the division; 72 catches misreading as 3/4."},
+ {c:"Verbal", t:"Which statement is closest in meaning to the proverb:\n\"Don't count your chickens before they hatch.\"",
+  o:["Poultry farming requires patience.",
+     "Don't rely on a gain before it is certain.",
+     "Plans should be made early.",
+     "Counting inventory prevents loss.",
+     "Never make promises you can't keep."], a:1, sh:true,
+  e:"The proverb warns against assuming an outcome before it happens.",
+  tip:"Eliminate any option that's LITERAL (about chickens or counting). Proverb answers are always the abstract principle."},
+ {c:"Number Series", t:"What is the next number?\n81   27   9   3   1   ?",
+  o:["0","1/9","1/6","1/3","1"], a:3,
+  e:"Divide by 3 each time. 1 ÷ 3 = 1/3.",
+  tip:"÷3 series run past 1 into fractions — don't stall when the options turn fractional. '0' is the series-must-end trap; 1/9 skips a term."},
+ {c:"Logic", t:"Assume the first two statements are true. Is the final statement true?\n1. All syringes from Box A are sterile.\n2. Some syringes on the tray came from Box A.\n3. Some syringes on the tray are sterile.",
+  o:SYL, a:0,
+  e:"The tray syringes that came from Box A must be sterile, so 'some' holds. Valid — True.",
+  tip:"'All X are Y' + 'some Z are X' → 'some Z are Y' is always True. Another pattern to memorize."},
+ {c:"Verbal", t:"OUNCE is to WEIGHT as SECOND is to ____?",
+  o:["minute","hour","time","clock","speed"], a:2, sh:true,
+  e:"An ounce is a unit of weight; a second is a unit of time.",
+  tip:"'Minute' is the association trap (a fellow unit, not the quantity measured). The relationship is unit → what it measures."},
+ {c:"Verbal", t:"IMPLAUSIBLE / BELIEVABLE — These words:",
+  o:VOCAB, a:1,
+  e:"Implausible = hard to believe. Opposites.",
+  tip:"Strip the prefix: im-plausible → NOT believable. Prefix math (im-, un-, in-) solves most of these."},
+ {c:"Math", t:"A car travels 210 miles in 3.5 hours. At the same speed, how far will it travel in 5 hours?",
+  o:["250 mi","280 mi","300 mi","330 mi","350 mi"], a:2,
+  e:"210 ÷ 3.5 = 60 mph. 60 × 5 = 300.",
+  tip:"Clear the half-hour by doubling both numbers: 420 ÷ 7 = 60. 350 catches dividing by 3 instead of 3.5."},
+ {c:"Spatial", t:"Which lettered shape is the MIRROR IMAGE (flipped left-to-right) of the original?", svg:SVG_MIRROR,
+  o:["Shape A","Shape B","Shape C","Shape D","Shape E"], a:0,
+  e:"A mirror flip swaps left and right but keeps top features at the top: pole moves to the right, flag stays near the top, now pointing left (A).",
+  tip:"Height alone is not enough — it clears the 180° spin but leaves the unchanged copy and the 90° turn standing. Height unchanged AND side swapped: both, every time."},
+ {c:"Number Series", t:"What is the next number?\n3   4   7   11   18   29   ?",
+  o:["40","44","46","47","58"], a:3,
+  e:"Each term is the sum of the previous two: 18 + 29 = 47.",
+  tip:"When the gaps look irregular (1, 3, 4, 7, 11), test sum-of-previous-two — Fibonacci rules hide behind non-classic openings. 58 catches ×2."},
+ {c:"Verbal", t:"DROUGHT is to RAIN as FAMINE is to ____?",
+  o:["hunger","crops","food","poverty","disease"], a:2, sh:true,
+  e:"A drought is a shortage of rain; a famine is a shortage of food.",
+  tip:"'Hunger' is the association trap. Build the relationship sentence — 'shortage OF ____' — and plug it in."},
+ {c:"Math", t:"45 is what percent of 36?",
+  o:["25%","80%","111%","120%","125%"], a:4,
+  e:"45/36 = 5/4 = 125%.",
+  tip:"'Of' marks the base (36). Since 45 > 36 the answer must top 100% — sanity-check the direction first. 80% is the inverted-fraction trap; 25% is the difference (9/36) mistaken for the answer."},
+ {c:"Verbal", t:"When the words below are rearranged into their best sentence, is the resulting statement TRUE or FALSE?\nthan   more   months   twelve   year   a   has",
+  o:["True","False"], a:1,
+  e:"\"A year has more than twelve months.\" A year has exactly twelve — False.",
+  tip:"Assemble the sentence, THEN judge it. The scramble slows you down so you forget to actually check the fact."},
+ {c:"Logic", t:"Assume the first two statements are true. Is the final statement true?\n1. No ICU room is unoccupied.\n2. Room 7 is unoccupied.\n3. Room 7 is an ICU room.",
+  o:SYL, a:1,
+  e:"'No ICU room is unoccupied' = every ICU room is occupied. Room 7 is unoccupied, so it cannot be an ICU room. Contradicted — False.",
+  tip:"Kill double negatives first: rewrite 'no X is un-Y' as 'all X are Y', then test the conclusion against it."},
+
+ // ---------- HARD (36–50) ----------
+ {c:"Math", t:"A shirt costs $8 more than a hat. Together they cost $30. What does the shirt cost?",
+  o:["$8","$11","$15","$19","$22"], a:3,
+  e:"Hat = (30 − 8) ÷ 2 = $11. Shirt = 11 + 8 = $19.",
+  tip:"'Together A+B, A costs $d more' → smaller item = (total − d)/2. $11 is the hat (the classic error: answering the wrong item); $22 = 30 − 8 misused; $15 = half of 30."},
+ {c:"Verbal", t:"MITIGATE is to AGGRAVATE as CONCEAL is to ____?",
+  o:["hide","cover","reveal","protect","deceive"], a:2, sh:true,
+  e:"Mitigate and aggravate are opposites; the opposite of conceal is reveal.",
+  tip:"Identify the relationship type FIRST (opposites), then apply it. 'Hide' is the synonym trap for people who skip that step."},
+ {c:"Verbal", t:"SANGUINE / OPTIMISTIC — These words:",
+  o:VOCAB, a:0,
+  e:"Sanguine = cheerfully confident.",
+  tip:"Unknown word? Judge its tone from where you've heard it, pick, move on. Never burn 30s on one vocab item — it's 1 point."},
+ {c:"Math", t:"A machine fills 200 bottles in 40 minutes. How many bottles does it fill in 2.5 hours?",
+  o:["500","600","650","700","750"], a:4,
+  e:"200 ÷ 40 = 5 per minute. 2.5 h = 150 min. 5 × 150 = 750.",
+  tip:"Convert everything to ONE time unit (minutes) before multiplying. 500 catches 2.5 × 200; 600 catches using 2 hours."},
+ {c:"Logic", t:"Assume the first three statements are true. Is the final statement true?\n1. Some phlebotomists are left-handed.\n2. All left-handed phlebotomists use blue gloves.\n3. Maria is a phlebotomist.\n4. Maria uses blue gloves.",
+  o:SYL, a:2,
+  e:"Only SOME phlebotomists are left-handed; Maria may not be one of them. Nothing contradicts the conclusion either — Not certain.",
+  tip:"'Some' + a specific person → almost always Not certain, unless the person is explicitly placed inside the subgroup."},
+ {c:"Math", t:"Which fraction is LARGEST?",
+  o:["5/8","13/20","2/3","7/11","19/30"], a:2, sh:true,
+  e:"As decimals: .625, .65, ≈.667, ≈.636, ≈.633 — 2/3 wins.",
+  tip:"Anchor the two biggest-looking (13/20 = .65 vs 2/3 ≈ .667) and compare just that pair; convert the rest only far enough to eliminate them."},
+ {c:"Verbal", t:"EPHEMERAL is to PERMANENT as TRANSPARENT is to ____?",
+  o:["clear","opaque","fragile","visible","glassy"], a:1, sh:true,
+  e:"The first pair are opposites; the opposite of transparent is opaque.",
+  tip:"'Clear' is the synonym trap. Relationship first (opposites), then apply."},
+ {c:"Math", t:"A train leaves at 9:40 AM and arrives at 1:25 PM, including one 35-minute stop. How long was the train actually moving?",
+  o:["2 h 40 m","3 h 10 m","3 h 20 m","3 h 45 m","4 h 20 m"], a:1,
+  e:"Total elapsed: 9:40 → 1:25 = 3 h 45 m. Minus the 35-minute stop = 3 h 10 m.",
+  tip:"Two separate steps: total elapsed (jump whole hours first), THEN subtract the stop. 3 h 45 m is the trap for ignoring the stop; 4 h 20 m for adding it."},
+ {c:"Number Series", t:"What is the next number?\n100   96   88   76   60   ?",
+  o:["40","44","48","52","56"], a:0,
+  e:"The gaps grow: −4, −8, −12, −16, so next is −20 → 40.",
+  tip:"When ratios fail, write the differences down. A growing gap means the NEXT gap grows again — 44 catches repeating −16."},
+ {c:"Verbal", t:"Which statement is closest in meaning to the proverb:\n\"The cobbler's children go barefoot.\"",
+  o:["A shoemaker's trade earns too little to support a family.",
+     "People often fail to apply their skills where their own household is concerned.",
+     "Children should be taught their parent's trade.",
+     "Hard work matters more than fine shoes.",
+     "Skilled workers deserve better pay."], a:1, sh:true,
+  e:"The cobbler makes shoes for customers all day while his own children lack them — expertise gets spent on others and neglected at home.",
+  tip:"Eliminate literal shoe/trade readings first, then match the proverb's internal structure (serves others ↔ neglects own) to the abstract option that mirrors it."},
+ {c:"Math", t:"A price rises from $80 to $92. What is the percent increase?",
+  o:["12%","13%","15%","18%","20%"], a:2,
+  e:"Increase of 12 on a base of 80 → 12/80 = 15%.",
+  tip:"Percent change = change ÷ ORIGINAL. The trap answer (12%) is the raw dollar change dressed up as a percent."},
+ {c:"Logic", t:"Ann is taller than Beth. Dana is shorter than Cara. Beth is taller than Cara.\nWho is second SHORTEST?",
+  o:["Ann","Beth","Cara","Dana","Cannot be determined"], a:2,
+  e:"Merge the pieces: Ann > Beth > Cara > Dana. Second shortest is Cara.",
+  tip:"Two partial orders must be merged — write the line: A > B > C > D. Then re-read the question: second SHORTEST, not tallest. The reversal is half the difficulty."},
+ {c:"Spatial", t:"Four of these shapes are the same shape rotated. Which one is DIFFERENT (a mirror image)?", svg:SVG_ODD,
+  o:["Shape A","Shape B","Shape C","Shape D","Shape E"], a:1,
+  e:"A, C, D, E are all rotations of the same L-shape. B's foot bends the opposite way — no rotation produces it, only a flip.",
+  tip:"Rotations preserve 'handedness'; a mirror image can't be rotated back to match. Track which way the foot turns relative to the long side."},
+ {c:"Number Series", t:"What is the next number?\n2   3   5   9   17   33   ?",
+  o:["57","63","65","66","67"], a:2,
+  e:"Each term is ×2 − 1: 33 × 2 − 1 = 65.",
+  tip:"Gaps double (1, 2, 4, 8, 16) → rule is ×2 with a constant; the last pair (17 → 33) shows the constant is −1. 66 catches ×2 alone."},
+ {c:"Math", t:"3 pens and 2 pencils cost $2.60. 1 pen and 4 pencils cost $2.20. What does ONE pencil cost?",
+  o:["$0.30","$0.40","$0.55","$0.60","$0.80"], a:1,
+  e:"Triple the second: 3 pens + 12 pencils = $6.60. Subtract the first: 10 pencils = $4.00 → $0.40 each.",
+  tip:"Two equations: scale one so the pens match, subtract, divide. $0.60 is the PEN price (wrong item); $0.55 = 2.20 ÷ 4 ignoring the pen. If this eats 30s, guess and move — it's still just 1 point."}
+];
+
+
+// Transferable playbook per question type — how to recognize it and the fixed procedure.
+const METHODS = {
+ "Verbal": {
+  spot:"Two words in caps, an A:B::C:? analogy, a proverb in quotes, a scrambled sentence, or a five-word odd-one-out.",
+  method:["Word pair → define each word in two words silently, then ask: same / opposite / neither. Nothing else.",
+          "Analogy → say the relationship as a full sentence first ('a finger is PART OF a hand'), then plug the second pair in. Never pick before the sentence exists.",
+          "Proverb → cross out every literal option, then say the proverb's abstract shape in your own words (premature reliance; skill spent outward, neglected at home) and pick the option restating that shape. Expect two or three abstract survivors after the literal cut — the restatement decides it.",
+          "Odd-one-out → find the category FOUR of the five share; the fifth is the answer. Three is never enough — with five options a three-way category always leaves two survivors.",
+          "Scrambled sentence → find subject + verb, hear the sentence, THEN answer what was actually asked."],
+  trap:"The association trap. HAMMER→nail and FAMINE→hunger feel right because the words travel together, but they break the relationship. Prefixes too: im-/un-/in- usually flips meaning — strip it and sanity-check, since a few (invaluable, inflammable) don't flip.",
+  budget:"3–5s word pairs · 10–15s analogies · 20–25s proverbs & scrambles"
+ },
+ "Math": {
+  spot:"Any numbers, money, percent, ratio, rate, or 'how many'.",
+  method:["Read the LAST line first so you know what's being asked before parsing the numbers.",
+          "Percent → find 10%, then scale. 'A is what percent of B' → A ÷ B; the word 'of' marks the base. Use change ÷ ORIGINAL only when it actually says increase, decrease, or change.",
+          "Fraction of a number → divide by the denominator first, then multiply.",
+          "Rate → get the per-1 unit rate, then scale. Exception: when the target is a clean fraction of the given unit (3 of 12 eggs = 1/4), scale the whole instead. Convert inputs to ONE unit before multiplying; convert the ANSWER's unit last.",
+          "'A costs $d more, together $T' → smaller = (T − d) ÷ 2.",
+          "Averages → work in TOTALS (avg × count), never average the averages."],
+  trap:"Answering the wrong item. The options include the other person's share, the discount instead of the price, the pen instead of the pencil. Re-read the question before you commit.",
+  budget:"15–20s"
+ },
+ "Number Series": {
+  spot:"A row of numbers ending in a blank or question mark.",
+  method:["Divide the last term by the one before it, then check that ratio on one earlier pair. Clean on both (×2, ÷3)? Done. Close to but not exactly 2 means ×2 plus a constant — go to the differences.",
+          "No clean ratio → write the differences underneath.",
+          "Differences constant → simple add/subtract. Differences DOUBLING across every gap (not just the first two) → rule is ×2 ± a constant; use the last pair to find the constant and its sign.",
+          "Differences growing steadily (−4,−8,−12) → the next gap grows again.",
+          "Still nothing → test sum of the previous two (Fibonacci), including disguised openings like 3, 4, 7, 11."],
+  trap:"Applying the rule but dropping the constant — the ×2 answer is always offered next to the ×2+1 answer. Series also run past 1 into fractions; don't stall when the options turn fractional.",
+  budget:"12–15s"
+ },
+ "Logic": {
+  spot:"Numbered statements with 'Assume the first two/three statements are true', or a ranking puzzle (taller/faster than).",
+  method:["Rewrite double negatives immediately: 'no X is un-Y' becomes 'all X are Y'.",
+          "All X are Y + Z is an X → TRUE. All X are Y + some Z are X → 'some Z are Y' is TRUE.",
+          "Conclusion the premises actively contradict → FALSE. Conclusion merely unsupported → NOT CERTAIN. Keep these two apart; confusing them is the #1 error on this type.",
+          "'Some' + a named person → NOT CERTAIN, unless that person is explicitly placed inside the subgroup.",
+          "Ranking → write initials on one line (D > A > B > C), then read the answer off. Re-check whether it asked for tallest or shortest."],
+  trap:"Real-world knowledge. Judge only what the premises say, never whether it's true in a hospital. And superlative reversals — 'second shortest' after you built a tallest-first line.",
+  budget:"15–20s"
+ },
+ "Spatial": {
+  spot:"A row of shapes, a diagram, or the words rotated / mirror image / comes next.",
+  method:["Sequence → find the ONE element that moves and its direction, then advance it one step.",
+          "Left-right mirror → heights stay put, but left and right swap. Check BOTH: confirm one feature's height is unchanged (kills the 180° spin and the top-bottom flip), then confirm it crossed to the other side (kills the unchanged copy and the 90° turn).",
+          "Odd-one-out → rotations preserve handedness. If no rotation can produce it, it's the mirror — that's the odd one."],
+  trap:"The 'no change' option (a repeat of the last frame) and the 180° rotation offered as a fake mirror. Track one feature, not the whole shape.",
+  budget:"15–20s"
+ },
+ "Quick Recognition": {
+  spot:"A list of dates, a column of name/number pairs, or a set of similar words.",
+  method:["Dates → compare YEARS first and cross out losers, then months, then days. Never read them as whole dates.",
+          "Duplicate pairs → scan letter by letter, and check the initials; differences hide in vowel swaps (Nieman/Neiman) and single initials (G.K./C.K.).",
+          "Alphabetical → a shorter word that is a prefix of the others always comes first; otherwise compare the first letter where they diverge."],
+  trap:"'Jan 16, 1898' is planted to catch anyone comparing months before years. Scan one column at a time — these are pure speed points, and time lost here is what leaves questions unreached.",
+  budget:"5–8s"
+ },
+ "General Knowledge": {
+  spot:"A plain fact question with no computation.",
+  method:["You either know it or you don't. Answer in 3 seconds or guess and move — never reason it out.",
+          "Worth memorizing tonight: 7 months have 31 days, 4 have 30, February has 28 (29 in a leap year)."],
+  trap:"Spending 20 seconds reconstructing a fact worth exactly 1 point.",
+  budget:"3–5s"
+ }
+};
+
+function methodCard(cat, m, extraTag){
+  return `<div class="method">
+    <h3><span class="tag">${cat}</span>${extraTag || ""}<span class="tag">${m.budget}</span></h3>
+    <p class="ans"><b>Spot it:</b> ${m.spot}</p>
+    <ul class="mlist">${m.method.map(s=>`<li>${s}</li>`).join("")}</ul>
+    <div class="tip">⚠️ <b>Trap:</b> ${m.trap}</div>
+  </div>`;
+}
+
+// ---- state ----
+let idx = 0, answers = [], qStart = 0, testStart = 0, timerInt = null, curOrder = null, selectedChoice = null;
+const TOTAL_SEC = 720, SLOW_SEC = 25;
+const SUPA_URL = "https://mzrcsgympluneeodssrk.supabase.co";
+const SUPA_KEY = "sb_publishable_tfp6IZ2buUA5vAAJM5nZKg_4WJvUbej"; // publishable key: safe to embed, insert-only via RLS
+let takerName = "anonymous";
+
+function $(id){ return document.getElementById(id); }
+
+// attempt counter — repeat runs are inflated, say so up front
+let attempts = 0; try { attempts = +(localStorage.getItem("wl_attempts") || 0); } catch(e) {} // sandboxed viewers block storage
+if (attempts > 0) {
+  $("attemptnote").innerHTML = `<div class="warnbox">Attempt #${attempts+1}. You've seen these questions — repeat scores run high. Treat PACE and category accuracy as the signal, not the raw score.</div>`;
+}
+
+document.addEventListener("DOMContentLoaded", ()=>{
+  const t = $("taker");
+  if(t) t.addEventListener("keydown", e=>{ if(e.key==="Enter") startTest(); });
+});
+
+function startTest(){
+  const t = $("taker");
+  if(t && t.value.trim()) takerName = t.value.trim().slice(0,60);
+  $("start").classList.add("hidden");
+  $("test").classList.remove("hidden");
+  $("studyLink").classList.add("hidden");
+  testStart = Date.now();
+  timerInt = setInterval(tick, 250);
+  window.onbeforeunload = () => "Your test is in progress — leaving will lose it.";
+  document.addEventListener("keydown", keyAnswer);
+  showQ();
+}
+
+function tick(){
+  const left = TOTAL_SEC - Math.floor((Date.now() - testStart)/1000);
+  if(left <= 0){ finish(); return; }
+  const m = Math.floor(left/60), s = left%60;
+  const el = $("timer");
+  el.textContent = m + ":" + String(s).padStart(2,"0");
+  el.classList.toggle("low", left <= 120);
+  const tb = $("tbar");
+  tb.firstElementChild.style.width = (left / TOTAL_SEC * 100) + "%";
+  tb.classList.toggle("warn", left <= 180 && left > 60);
+  tb.classList.toggle("crit", left <= 60);
+}
+
+function showQ(){
+  const q = Q[idx];
+  qStart = Date.now();
+  selectedChoice = null;
+  $("qnum").textContent = "Question " + (idx+1) + " of 50";
+  $("qtext").textContent = q.t;
+  $("qsvg").innerHTML = q.svg || "";
+  // shuffle option order for order-independent items so retakes can't memorize letters
+  curOrder = q.o.map((_,i)=>i);
+  if(q.sh){
+    for(let i=curOrder.length-1;i>0;i--){
+      const j = Math.floor(Math.random()*(i+1));
+      [curOrder[i],curOrder[j]] = [curOrder[j],curOrder[i]];
+    }
+  }
+  const box = $("opts");
+  box.innerHTML = "";
+  curOrder.forEach((oi,pos)=>{
+    const b = document.createElement("button");
+    b.className = "opt";
+    b.setAttribute("aria-pressed", "false");
+    b.style.animationDelay = (pos * 20) + "ms";
+    b.textContent = String.fromCharCode(65+pos) + ".  " + q.o[oi];
+    b.onclick = ()=>selectAnswer(oi,b);
+    box.appendChild(b);
+  });
+  $("next").disabled = true;
+  $("next").textContent = idx === Q.length - 1 ? "Finish & submit" : "Next question";
+  $("pbar").firstElementChild.style.width = (idx / Q.length * 100) + "%";
+  window.scrollTo({top:0, behavior:"instant"});
+}
+
+function keyAnswer(ev){
+  if($("test").classList.contains("hidden")) return;
+  const k = ev.key.toLowerCase();
+  if(k === "enter"){
+    if(selectedChoice !== null) commitAnswer();
+    return;
+  }
+  let pos = -1;
+  if(k >= "1" && k <= "5") pos = +k - 1;
+  else if(k >= "a" && k <= "e") pos = k.charCodeAt(0) - 97;
+  if(pos < 0 || pos >= curOrder.length) return;
+  const btn = $("opts").children[pos];
+  if(btn) btn.click();
+}
+
+function selectAnswer(choice, button){
+  selectedChoice = choice;
+  Array.from($("opts").children).forEach(opt=>{
+    opt.classList.toggle("selected", opt === button);
+    opt.setAttribute("aria-pressed", opt === button ? "true" : "false");
+  });
+  $("next").disabled = false;
+}
+
+function commitAnswer(){
+  if(selectedChoice === null) return;
+  answers.push({choice:selectedChoice, sec:(Date.now()-qStart)/1000});
+  idx++;
+  if(idx >= Q.length) finish(); else showQ();
+}
+
+function finish(){
+  clearInterval(timerInt);
+  window.onbeforeunload = null;
+  document.removeEventListener("keydown", keyAnswer);
+  try { localStorage.setItem("wl_attempts", attempts + 1); } catch(e) {}
+  while(answers.length < Q.length) answers.push({choice:null, sec:0, unreached:true});
+  $("pbar").firstElementChild.style.width = "100%";
+  $("test").classList.add("hidden");
+  $("studyLink").classList.remove("hidden");
+  const r = $("results");
+  r.classList.remove("hidden");
+
+  let correct = 0;
+  const cats = {};
+  Q.forEach((q,i)=>{
+    cats[q.c] = cats[q.c] || {right:0,total:0};
+    cats[q.c].total++;
+    if(answers[i].choice === q.a){ correct++; cats[q.c].right++; }
+  });
+  const answered = answers.filter(a=>!a.unreached);
+  const avgSec = answered.length ? answered.reduce((s,a)=>s+a.sec,0)/answered.length : 0;
+
+  const cls = correct >= 26 ? "score-good" : correct >= 21 ? "score-mid" : "score-bad";
+  const verdict = correct >= 26 ? "Strong practice run — review slow items to protect the margin."
+    : correct >= 21 ? "Developing run — drill the weakest categories before another timed attempt."
+    : "Foundation run — review every miss below, then repeat the methods untimed.";
+
+  let html = `<div class="center">
+      <p class="sub">Your Wonderlic score (1 point per correct answer)</p>
+      <div class="score-big ${cls}">${correct}</div>
+      <p><b>${verdict}</b></p>
+      <p class="sub">You reached ${answered.length} of 50 · ${avgSec.toFixed(1)}s average per answered question (overall pace: 14.4s).</p>
+      ${attempts > 0 ? `<p class="sub">Attempt #${attempts+1} — repeat scores are inflated by memory.</p>` : ""}
+      <p style="margin-top:14px"><button class="btn-primary" onclick="location.reload()">Retake Test</button></p>
+    </div>
+    <h2>Category breakdown</h2>
+    <table><tr><th>Category</th><th>Correct</th><th>Focus?</th></tr>`;
+  Object.entries(cats).forEach(([c,v])=>{
+    const pct = v.right/v.total;
+    html += `<tr><td>${c}</td><td>${v.right} / ${v.total}</td><td>${pct<0.7?"⚠️ weakest — drill this first":"✓ solid"}</td></tr>`;
+  });
+  html += "</table>";
+
+  const weak = Object.entries(cats).filter(([,v]) => v.right/v.total < 0.7)
+    .sort((a,b) => (a[1].right/a[1].total) - (b[1].right/b[1].total));
+  if(weak.length){
+    html += `<h2>Drill these first — ${weak.length} weak ${weak.length===1?"category":"categories"}</h2>`;
+    weak.forEach(([c,v]) => {
+      if(METHODS[c]) html += methodCard(c, METHODS[c], `<span class="tag">${v.right}/${v.total}</span>`);
+    });
+  } else {
+    html += `<h2>No weak categories</h2><p>Every category cleared 70%. Work the full method list below for speed.</p>`;
+  }
+
+  const misses = Q.map((q,i)=>({q,i,a:answers[i]})).filter(x=> x.a.choice !== x.q.a);
+  html += `<h2>Missed & unreached (${misses.length}) — how to solve each one faster</h2>`;
+  if(!misses.length) html += "<p>Perfect run. Take it again — the real one won't be this kind.</p>";
+  misses.forEach(({q,i,a})=>{
+    const status = a.unreached ? "NOT REACHED" : "Your answer: " + q.o[a.choice];
+    html += `<div class="miss">
+      <h3>Q${i+1} <span class="tag">${q.c}</span> ${a.unreached?'<span class="tag">'+status+'</span>':''}</h3>
+      <p class="ans" style="white-space:pre-line">${q.t}</p>
+      ${q.svg || ""}
+      ${!a.unreached ? `<p class="ans">✗ ${status} ${a.sec>SLOW_SEC?`(took ${a.sec.toFixed(0)}s — too long)`:""}</p>` : ""}
+      <p class="ans">✓ Correct: <b>${q.o[q.a]}</b> — ${q.e}</p>
+      <div class="tip">⚡ Faster next time: ${q.tip}</div>
+    </div>`;
+  });
+
+  const slow = Q.map((q,i)=>({q,i,a:answers[i]})).filter(x=> x.a.choice === x.q.a && x.a.sec > SLOW_SEC);
+  if(slow.length){
+    html += `<h2>Right but slow (${slow.length}) — these cost you unreached questions</h2>`;
+    slow.forEach(({q,i,a})=>{
+      html += `<div class="miss slow">
+        <h3>Q${i+1} <span class="tag">${q.c}</span> <span class="tag">${a.sec.toFixed(0)}s</span></h3>
+        <p class="ans" style="white-space:pre-line">${q.t}</p>
+        ${q.svg || ""}
+        <div class="tip">⚡ ${q.tip}</div>
+      </div>`;
+    });
+  }
+  html = '<div id="upstatus" class="warnbox">Uploading results…</div>' + html;
+  html += `<h2>Every method — study list</h2>
+    <details><summary>Open all ${Object.keys(METHODS).length} question-type playbooks</summary>
+    ${Object.entries(METHODS).map(([c,m]) => methodCard(c, m)).join("")}</details>`;
+
+  r.innerHTML = html;
+  r.querySelectorAll(".miss").forEach((el,i)=>{ el.style.animationDelay = Math.min(i*45, 600) + "ms"; });
+  countUp(r.querySelector(".score-big"), correct);
+  window.scrollTo(0,0);
+  uploadResults({
+    taker_name: takerName,
+    score: correct,
+    answered: answered.length,
+    avg_sec: +avgSec.toFixed(1),
+    categories: cats,
+    answers: Q.map((q,i)=>({ n:i+1, category:q.c, question:q.t.slice(0,120), your_answer: answers[i].choice===null?null:q.o[answers[i].choice], correct_answer: q.o[q.a], correct: answers[i].choice===q.a, seconds: +answers[i].sec.toFixed(1) }))
+  });
+}
+
+function countUp(el, target){
+  if(!el || matchMedia("(prefers-reduced-motion:reduce)").matches) return;
+  const dur = 850, t0 = performance.now();
+  el.textContent = "0";
+  (function step(now){
+    const p = Math.min((now - t0) / dur, 1);
+    el.textContent = Math.round(target * (1 - Math.pow(1 - p, 3)));
+    if(p < 1) requestAnimationFrame(step);
+  })(t0);
+}
+
+async function uploadResults(payload){
+  const el = document.getElementById("upstatus");
+  try{
+    const res = await fetch(SUPA_URL + "/rest/v1/wonderlic_results", {
+      method: "POST",
+      headers: { "Content-Type":"application/json", "apikey":SUPA_KEY, "Authorization":"Bearer "+SUPA_KEY, "Prefer":"return=minimal" },
+      body: JSON.stringify(payload)
+    });
+    el.textContent = res.ok ? "✓ Results sent." : "Could not send results (status " + res.status + "). Screenshot this page instead.";
+  }catch(e){
+    el.textContent = "Could not send results (offline?). Screenshot this page instead.";
+  }
+}
+</script>
+</body>
+</html>
